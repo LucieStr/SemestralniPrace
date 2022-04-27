@@ -1,11 +1,23 @@
+### Java ###
+# Compiled class file
+*.class
 
+# Log file
+*.log
 
-# NetBeans specific
-nbproject/private/
+# Package Files #
+*.jar
+
+### NetBeans ###
+**/nbproject/
 build/
-nbbuild/
 dist/
-nbdist/
+build.xml
+manifest.mf
 
+### Intellij ###
+.idea/**/
+out/
 
-
+### Mac ###
+.DS_Store
