@@ -10,8 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
+
 
 /**
  *
@@ -19,7 +23,7 @@ import java.util.Scanner;
  */
 public class Customer {
     private String product;
-    public static int amount;
+    private int amount;
     private List<Product> tabCustomer;
 
     public Customer() {
@@ -27,9 +31,6 @@ public class Customer {
         this.product = product;
         this.tabCustomer = new ArrayList<>();
     }
-
-
-
 
     public void loadCustomer(File customerFile) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
@@ -46,16 +47,39 @@ public class Customer {
         }
     }
 //prpisovani souboru zakaznik
+
+    public int getAmount() {
+        return this.amount;
+    }
+    
+
     public List<Product> getTabCustomer() {
-        return tabCustomer;
+        ArrayList<Product> copy = new ArrayList<>();
+        for (Product product1 : tabCustomer) {
+            copy.add(new Product());
+        }
+        return copy;
     }
 
 
-    public void updatetabCustomer(){
-        //predelat amount zakaznik
+    public void pickProduct(String name, int amount){
+        Product p = findByName(name);
+        p.getProduct(amount, name);
+
     }
     
-    
+    public void addproduct(String name, int amount){
+        Product p = findByName(name);
+        p.addProduct(amount, name);
+    }
+    private Product findByName(String name){
+              for (Product tab : tabCustomer) {
+            if (tab.getName() == name) {
+                return tab;
+            }
+        }
+        throw new NoSuchElementException("produkt s nazvem " + name + " neexistuje.");
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -65,14 +89,22 @@ public class Customer {
         return sb.toString();
     }
 
-
+    public void sortByName(){ //zmenit na jidlo a piti
+        Comparator cbp = new utils.ComparatorProductByName();
+        Collections.sort(tabCustomer,cbp);
+    }
+    
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         Customer c = new Customer();
-        c.loadCustomer(new File("zakaznik.txt"));
+        c.loadCustomer(new File("zkouska.txt"));
+        System.out.println(c);
+        c.getTabCustomer();
         System.out.println(c);
         
 
     }
+
+
 
 }

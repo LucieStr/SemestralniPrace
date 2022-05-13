@@ -8,20 +8,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  *
  * @author lucka
  */
-public class Owner {
-    public static int priceOneProduct;
+public class Owner  {
+    private int priceOneProduct;
     private String name;
-    public static List<TabOwner> tabOwner;
+    private List<TabOwner> tabOwner;
 
     public Owner() {
         this.name = name;
         this.tabOwner = new ArrayList<>();
     }
 
+
+    public List<TabOwner> getTabOwner() {
+        ArrayList<TabOwner> copy = new ArrayList<>();
+        for (TabOwner tab : tabOwner) {
+            copy.add(new TabOwner());
+        }
+        return copy;
+    }
+    
+  
+    public int getPriceOneProduct() {
+        return this.priceOneProduct;
+    }
+    
     public void loadOwner(File ownerFile) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(ownerFile))) {
             String[] parts;
@@ -38,6 +53,16 @@ public class Owner {
     }
 
 //prepisovani majitel1
+    
+
+    public void setPriceOneProduct(int priceOneProduct,String name) {
+        for (TabOwner tab : tabOwner) {
+            if(name == this.name){
+               this.priceOneProduct = priceOneProduct; 
+            }
+        }        
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -54,4 +79,8 @@ public class Owner {
         
         
     }
+
+
+
+
 }

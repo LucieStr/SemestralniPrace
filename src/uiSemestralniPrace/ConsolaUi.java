@@ -14,11 +14,14 @@ public class ConsolaUi {
     private static app.Customer customer;
     private static app.Owner owner;
     private static app.Money money;
+    private static String parent;
+    private static File dataDirectory;
 
     public static void main(String[] args) throws IOException { //IO??
         boolean end = false;
         int choice;
-
+        parent = System.getProperty("user.dir") + File.separator + "data"; 
+        dataDirectory = new File(parent);
         do {
             System.out.println("Kdo jsi?");
             displayMenu();
@@ -35,7 +38,7 @@ public class ConsolaUi {
                     end = true;
                     break;
                 default:
-                    System.out.println("neplatna volba volba");
+                    System.out.println("neplatna volba ");
             }
         } while (!end);
     }
@@ -51,6 +54,7 @@ public class ConsolaUi {
         int choice;
         owner = new app.Owner();
         money = new app.Money();
+        customer = new app.Customer();
         do {
             displayMenuOwner();
             choice = sc.nextInt();
@@ -58,16 +62,15 @@ public class ConsolaUi {
                 case 1:
                     displayProducts();
                     break;
-               // case 2:
-                 //   addProduct();
-                   // break;
+                case 2:
+                    addProduct();
+                    break;
                 case 3:
                     displayMoney();
                     break;
                 case 4:
                     displaPrice();
                 case 0:
-                    System.out.println("konec");
                     end = true;
                     break;
                 default:
@@ -78,15 +81,16 @@ public class ConsolaUi {
 
     private static void displayMenuOwner() {
         System.out.println("1 = zobrazit produkty");
-        //System.out.println("2 = pridat produkty");
+        System.out.println("2 = pridat produkty");
         System.out.println("3 = informace o vydelku");
         System.out.println("4 = zobrazit ceny jednotlivych produktu");
-        System.out.println("0 = konec");
+        System.out.println("0 = zpet");
     }
 
     private static void customer() throws IOException { //muze tam byt IOException???
         System.out.println("Vitam te v Horskem stanku.");
         System.out.println("Kde zaplatis kolik budes chtit.");
+        System.out.println("Dnes je "+"a prave je "); //datuma hodiny Local.date      
         boolean end = false;
         int choice;
         customer = new app.Customer();
@@ -100,7 +104,7 @@ public class ConsolaUi {
                     break;
                 case 2:
                     pickProduct();
-                    break;                       
+                    break;
                 case 3:
                     pay();
                     break;
@@ -110,8 +114,7 @@ public class ConsolaUi {
                 case 5:
                     showMap();
                     break;
-                case 0:
-                    System.out.println("konec");
+                case 0: 
                     end = true;
                     break;
                 default:
@@ -126,20 +129,43 @@ public class ConsolaUi {
         System.out.println("3 = zaplatit");
         System.out.println("4 = ohodnotit");
         System.out.println("5 = ukazat mapu");
-        System.out.println("0 = konec");
+        System.out.println("0 = zpet");
     }
-    
+
     /**
-     * display products
-     * @throws IOException 
+     * display products and amount
+     *
+     * @throws IOException
      */
     private static void displayProducts() throws IOException { //io??
-        customer.loadCustomer(new File("zakaznik.txt"));
+        customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
         System.out.println(customer);
     }
 
+    /**
+     * display products with price
+     * @throws IOException 
+     */
     private static void displaPrice() throws IOException {
-        owner.loadOwner(new File("majitel1.txt"));
+        owner.loadOwner(new File(dataDirectory, "majitel1.txt"));
         System.out.println(owner);
     }
+
+    private static void pay() {
+        System.out.println("Zadejte castku");
+        money.moneyFromCustomer(sc.nextInt());
+        System.out.println("Dekuju");
+    }
+
+    private static void pickProduct() {
+        System.out.println("Napiste nazev produktu a pocet");
+        customer.pickProduct(sc.next(), sc.nextInt());
+    }
+
+    private static void addProduct() {
+        System.out.println("Napiste nazev a mnozstvi produktu, ktere chcete pridat");
+        customer.addproduct(sc.next(), sc.nextInt());
+    }
+
+
 }

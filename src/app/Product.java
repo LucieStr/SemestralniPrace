@@ -8,7 +8,7 @@ package app;
  *
  * @author lucka
  */
-public class Product {
+public class Product implements Comparable<Product> {
 
     private String name;
     private int amount;
@@ -16,6 +16,11 @@ public class Product {
     public Product(int amount, String name) {
         this.name = name;
         this.amount = amount;
+    }
+
+    public Product() {
+        this.amount = amount;
+        this.name = name;
     }
 
     public String getName() {
@@ -35,11 +40,21 @@ public class Product {
         this.name = name;
     }
 
+    public void addProduct(int amount, String name) {
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return String.format("%3d kusu %10s", this.amount, this.name);
     }
+
     public static void main(String[] args) {
-        
+
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        return this.getAmount() - o.getAmount();
     }
 }
