@@ -1,0 +1,15 @@
+name priceOneProduct
+Mila 14
+Horalka 10
+Tatranka 12
+Fidorka 16
+Preclik 15
+Chleb 20
+Voda 23
+Dzus 23
+Coca-Cola 30
+Sprite 30
+Pivo 26
+Kava 30
+Caj 25
+Jablko 10

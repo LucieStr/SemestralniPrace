@@ -1,8 +1,15 @@
 package uiSemestralniPrace;
 
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,7 +27,7 @@ public class ConsolaUi {
     public static void main(String[] args) throws IOException { //IO??
         boolean end = false;
         int choice;
-        parent = System.getProperty("user.dir") + File.separator + "data"; 
+        parent = System.getProperty("user.dir") + File.separator + "data";
         dataDirectory = new File(parent);
         do {
             System.out.println("Kdo jsi?");
@@ -42,14 +49,21 @@ public class ConsolaUi {
             }
         } while (!end);
     }
-
+    
+    /**
+     * display menu if owner or customer
+     */
     private static void displayMenu() {
         System.out.println("1 = majitel");
         System.out.println("2 = zakaznik");
         System.out.println("0 = konec");
     }
-
-    private static void owner() throws IOException { //IO??
+    
+    /**
+     * menu for owner
+     * @throws IOException 
+     */
+    private static void owner() throws IOException { 
         boolean end = false;
         int choice;
         owner = new app.Owner();
@@ -60,7 +74,7 @@ public class ConsolaUi {
             choice = sc.nextInt();
             switch (choice) {
                 case 1:
-                    displayProducts();
+                    displayProductsByAmount();
                     break;
                 case 2:
                     addProduct();
@@ -69,7 +83,8 @@ public class ConsolaUi {
                     displayMoney();
                     break;
                 case 4:
-                    displaPrice();
+                    displayPrice();
+                    break;
                 case 0:
                     end = true;
                     break;
@@ -79,6 +94,9 @@ public class ConsolaUi {
         } while (!end);
     }
 
+    /**
+     * display menu for owner
+     */
     private static void displayMenuOwner() {
         System.out.println("1 = zobrazit produkty");
         System.out.println("2 = pridat produkty");
@@ -87,14 +105,20 @@ public class ConsolaUi {
         System.out.println("0 = zpet");
     }
 
+    /**
+     * menu for customer
+     * @throws IOException 
+     */
     private static void customer() throws IOException { //muze tam byt IOException???
-        System.out.println("Vitam te v Horskem stanku.");
-        System.out.println("Kde zaplatis kolik budes chtit.");
-        System.out.println("Dnes je "+"a prave je "); //datuma hodiny Local.date      
-        boolean end = false;
-        int choice;
         customer = new app.Customer();
         money = new app.Money();
+        System.out.println("Vitam te v Horskem stanku.");
+        System.out.println("Kde zaplatis kolik budes chtit.");
+        String date = customer.date();
+        System.out.println("Dnes je " + date);
+        boolean end = false;
+        int choice;
+
         do {
             displayMenuCustomer();
             choice = sc.nextInt();
@@ -109,12 +133,9 @@ public class ConsolaUi {
                     pay();
                     break;
                 case 4:
-                    rate();
-                    break;
-                case 5:
                     showMap();
                     break;
-                case 0: 
+                case 0:
                     end = true;
                     break;
                 default:
@@ -123,49 +144,109 @@ public class ConsolaUi {
         } while (!end);
     }
 
+    /**
+     * display menu for customer
+     */
     private static void displayMenuCustomer() {
         System.out.println("1 = zobrazit menu");
         System.out.println("2 = vybrat produkty");
         System.out.println("3 = zaplatit");
-        System.out.println("4 = ohodnotit");
-        System.out.println("5 = ukazat mapu");
+        System.out.println("4 = ukazat mapu");
         System.out.println("0 = zpet");
     }
 
     /**
-     * display products and amount
+     * display products sort by amount
      *
      * @throws IOException
      */
-    private static void displayProducts() throws IOException { //io??
+    private static void displayProductsByAmount() throws IOException { // vyhazuje vickrat po pridani produktu
         customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
+        customer.getTabCustomer();
+        customer.sortByAmount();
         System.out.println(customer);
     }
 
     /**
-     * display products with price
-     * @throws IOException 
+     * display products and price of one product
+     *
+     * @throws IOException
      */
-    private static void displaPrice() throws IOException {
+    private static void displayPrice() throws IOException { 
         owner.loadOwner(new File(dataDirectory, "majitel1.txt"));
         System.out.println(owner);
     }
 
-    private static void pay() {
+    /**
+     * get money from customer
+     * @throws IOException 
+     */
+    private static void pay() throws IOException{ 
         System.out.println("Zadejte castku");
         money.moneyFromCustomer(sc.nextInt());
-        System.out.println("Dekuju");
+        System.out.println("Dekuju za zaplaceni");
+        money.safeBinaryFile(new File(dataDirectory,"money.dat"));
+
     }
 
-    private static void pickProduct() {
+    /**
+     * load what product customer pick
+     * @throws IOException 
+     */
+    private static void pickProduct() throws IOException { 
+        customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
         System.out.println("Napiste nazev produktu a pocet");
-        customer.pickProduct(sc.next(), sc.nextInt());
+        String name = sc.next();
+        int amount = sc.nextInt();
+        customer.pickProduct(name, amount);
+        //customer.safeCustomer(new File(dataDirectory, "zakaznik.txt"));
     }
-
-    private static void addProduct() {
+    
+    /**
+     * upgrade amount of products
+     * @throws IOException 
+     */
+    private static void addProduct() throws IOException { 
+        customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
         System.out.println("Napiste nazev a mnozstvi produktu, ktere chcete pridat");
         customer.addproduct(sc.next(), sc.nextInt());
+        //customer.safeCustomer(new File(dataDirectory, "zakaznik.txt"));
+    }
+    
+    /**
+     * display products sort by what it is (food or drink)
+     * @throws IOException 
+     */
+    private static void displayProducts() throws IOException { //kdyz prodam produkt vzhazuje dvakrat
+              customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
+              customer.sortByWhat();
+              System.out.println(customer);
     }
 
+    /**
+     * show map
+     */
+    private static void showMap() {  
+     try{
+       BufferedImage img = ImageIO.read(new File(dataDirectory,"map.jpg"));
+     JLabel pick = new JLabel(new ImageIcon(img));
+     JPanel jPanel = new JPanel();
+     jPanel.add(pick);
+     JFrame f = new JFrame();
+     f.setSize(new Dimension(img.getWidth(),img.getHeight()));
+     f.add(jPanel);
+     f.setVisible(true);
+     }catch(IOException e){        
+     }
+    }
 
+    /**
+     * display file with price and income
+     * @throws IOException 
+     */
+    private static void displayMoney() throws IOException {
+        System.out.println(money.readBinaryFile(new File(dataDirectory,"money.dat"))); //nemuze se zobrazit pokud neni vydelek
+        System.out.println(money.income());
+        
+    }
 }

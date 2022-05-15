@@ -9,12 +9,25 @@ public class TabOwner {
     private String name;
     private int priceOneProduct;
 
-    public TabOwner(){
+    public TabOwner() {
         this.name = name;
         this.priceOneProduct = priceOneProduct;
     }
+
     public TabOwner(String name, int price) {
         this.name = name;
+        this.priceOneProduct = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPriceOneProduct() {
+        return priceOneProduct;
+    }
+
+    public void setProductPrice(int price) {
         this.priceOneProduct = price;
     }
 

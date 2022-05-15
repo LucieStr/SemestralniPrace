@@ -1,0 +1,15 @@
+amount name what
+5 Mila fo
+10 Horalka fo
+9 Tatranka fo
+11 Fidorka fo
+5 Preclik fo
+6 Chleb fo
+10 Voda dr
+10 Dzus dr
+12 Coca-Cola dr
+7 Sprite dr
+8 Pivo dr
+8 Kava dr
+20 Caj dr
+5 Jablko fo

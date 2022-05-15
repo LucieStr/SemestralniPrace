@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package app;
 
 /**
@@ -12,15 +8,18 @@ public class Product implements Comparable<Product> {
 
     private String name;
     private int amount;
+    private String what;
 
-    public Product(int amount, String name) {
+    public Product(int amount, String name, String what) {
         this.name = name;
         this.amount = amount;
+        this.what = what;
     }
 
     public Product() {
         this.amount = amount;
         this.name = name;
+        this.what = what;
     }
 
     public String getName() {
@@ -31,6 +30,15 @@ public class Product implements Comparable<Product> {
         return amount;
     }
 
+    public String getWhat() {
+        return what;
+    }
+
+    /**
+     * get lower amount of product
+     * @param amount
+     * @param name 
+     */
     public void getProduct(int amount, String name) {
         if (amount > this.amount) {
             throw new utils.MyException("Zadali jste vetsi mnozstvi nez toho mame.");
@@ -40,6 +48,11 @@ public class Product implements Comparable<Product> {
         this.name = name;
     }
 
+    /**
+     * get new amount of product
+     * @param amount
+     * @param name 
+     */
     public void addProduct(int amount, String name) {
         this.amount = amount;
     }
@@ -49,12 +62,8 @@ public class Product implements Comparable<Product> {
         return String.format("%3d kusu %10s", this.amount, this.name);
     }
 
-    public static void main(String[] args) {
-
-    }
-
     @Override
     public int compareTo(Product o) {
-        return this.getAmount() - o.getAmount();
+        return this.getWhat().compareTo(o.getWhat());
     }
 }

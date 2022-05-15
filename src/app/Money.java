@@ -1,7 +1,9 @@
 package app;
 
+import utils.Income;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,10 +36,27 @@ public class Money {
         return income;
     }
 
-    public int moneyFromCustomer(int money) {
-        return this.income = income + money;
+    public void setIncome(int income) {
+        this.income = income;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    /**
+     * upgrade income with money from customer
+     * @param money 
+     */
+    public void moneyFromCustomer(int money) {
+        this.income = income + money;
+        setIncome(this.income);
+    }
+
+    /**
+     * find income
+     * @return enum
+     */
     public Income income() {
         if (income > price) {
             return Income.VYDELEK;
@@ -48,17 +67,20 @@ public class Money {
         }
     }
 
+    /**
+     * sum price from amount and price from one product
+     * @return 
+     */
     public int price() { //nevim 
-        Owner owner = new Owner();
-        Customer customer = new Customer();
-        for (int i = 0; i < (owner.getTabOwner().size()); i++) {
-            for (int j = 0; j < (customer.getTabCustomer().size()); j++) {
-                this.price = price + (owner.getPriceOneProduct() * customer.getAmount());
-            }
-        }
+
         return this.price;
     }
 
+    /**
+     * safe binary file
+     * @param money
+     * @throws IOException 
+     */
     public void safeBinaryFile(File money) throws IOException {
         try (DataOutputStream out = new DataOutputStream(new FileOutputStream(money))) {
             out.writeInt(price());
@@ -66,13 +88,27 @@ public class Money {
         }
     }
 
+    /**
+     * read binary file
+     * @param money
+     * @return price and income
+     * @throws IOException 
+     */
     public String readBinaryFile(File money) throws IOException {
         StringBuilder sb = new StringBuilder();
-        int nprice, nincome;
+        int nprice, nincome;       
         try (DataInputStream in = new DataInputStream(new FileInputStream(money))) {
-            nprice = in.readInt();
-            nincome = in.readInt();
-            sb.append(String.format("Vse stalo %10d Kc Vydelek je %10d", nprice, nincome));
+            boolean end = false;
+            while (!end) {
+                try {
+                    nprice = in.readInt();
+                    nincome = in.readInt();
+                    sb.append(String.format(" Vse stalo %1dKc a vydelek je %1dKc%n", nprice, nincome));
+
+                } catch (EOFException e) {
+                    end = true;
+                }
+            }
         }
         return sb.toString();
     }
@@ -86,14 +122,18 @@ public class Money {
         Money m = new Money();
         Owner r = new Owner();
         Customer c = new Customer();
-        c.loadCustomer(new File("zkouska.txt"));
-        r.loadOwner(new File("zkouska2.txt"));
+        //c.loadCustomer(new File("zkouska.txt"));
+       // r.loadOwner(new File("zkouska2.txt"));
         m.price();
         int price = 100;
         int income = 500;
-        System.out.println(m);
+        m.moneyFromCustomer(income);
+        m.setPrice(price);
+        //System.out.println(m);
         m.safeBinaryFile(new File("zkouska3.dat"));
-
+        System.out.println(m.readBinaryFile(new File("zkouska3.dat")));
+        System.out.println(m.income());
+        //System.out.println(m);
     }
 
 }
