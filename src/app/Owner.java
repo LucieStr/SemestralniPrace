@@ -30,7 +30,7 @@ public class Owner  {
     public List<TabOwner> getTabOwner() {
         ArrayList<TabOwner> copy = new ArrayList<>();
         for (TabOwner tab : tabOwner) {
-            copy.add(new TabOwner());
+            copy.add(new TabOwner(tab));
         }
         return copy;
     }
@@ -50,18 +50,18 @@ public class Owner  {
             while ((line = br.readLine()) != null) {
                 parts = line.split("[ ]+");
                 r = new TabOwner(parts[0], Integer.parseInt(parts[1]));
-                
+
                 tabOwner.add(r);
             }
         }
     }
 
     /**
-     * safe file for owner
+     * save file for owner
      * @param result
      * @throws IOException 
      */
-    public void safeOwner (File result) throws IOException{
+    public void saveOwner (File result) throws IOException{
         try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(result)))){
             pw.println(String.format("%10s %5s","Nazev","Cena"));
             for (TabOwner tab : tabOwner) {
@@ -69,6 +69,10 @@ public class Owner  {
                 
             }
         }
+    }
+    
+    public void saveOwnertab(List<TabOwner> tab){
+        this.tabOwner = tab;
     }
     
     /**
@@ -95,14 +99,14 @@ public class Owner  {
 
     public static void main(String[] args) throws IOException {
         Owner o = new Owner();
+        
         o.loadOwner(new File("zkouska2.txt"));
         System.out.println(o);
         o.setPriceOneProduct(15, "Mila");
         System.out.println(o);
-        o.safeOwner(new File("zkouska4.txt"));
-        
+        o.saveOwner(new File("zkouska4.txt"));
+      
     }
-
 
 
 

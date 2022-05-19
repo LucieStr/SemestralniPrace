@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 /**
@@ -21,6 +23,8 @@ public class Money {
     private int price;
     private static Customer customer;
     private static Owner owner;
+    private static Product product;
+    private static TabOwner tabOwner;
 
     public Money() {
         this.income = income;
@@ -44,66 +48,92 @@ public class Money {
         this.price = price;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     /**
      * upgrade income with money from customer
-     * @param money 
+     *
+     * @param money
      */
     public void moneyFromCustomer(int money) {
+        try{
         this.income = income + money;
         setIncome(this.income);
+        }catch(InputMismatchException e){
+            System.out.println("Spatne zadana cena");
+        }
     }
 
     /**
      * find income
+     *
      * @return enum
      */
     public Income income() {
         if (income > price) {
             return Income.VYDELEK;
-        } else if (income < price) {
-            return Income.PRODELEK;
         } else {
-            return Income.NEPRODELEK;
+            return Income.PRODELEK;
         }
     }
 
     /**
      * sum price from amount and price from one product
-     * @return 
+     *
+     * @return
      */
-    public int price() { //nevim 
+    public int price() throws IOException { //nevim 
+        //owner = new Owner();
+        //customer = new Customer();
+        int amount, pOP;
+        int [] am = uiSemestralniPrace.ConsolaUi.parseAmount();
+        int [] p = uiSemestralniPrace.ConsolaUi.parsePOP();
+//        List<Product> cu = customer.getTabCustomer();
+//        List<TabOwner> ow = owner.getTabOwner();
+//        String[][] cuArray = cu.toArray(new String[cu.size()][3]);
+//        String[][] owArray = ow.toArray(new String[cu.size()][2]);
+        for (int i = 0; i < am.length; i++) {
+            amount = am[i];
+            pOP = p[i];
+            this.price = this.price + (amount * pOP);
 
-        return this.price;
+        }
+
+        return price;
     }
 
     /**
      * safe binary file
+     *
      * @param money
-     * @throws IOException 
+     * @throws IOException
      */
     public void safeBinaryFile(File money) throws IOException {
         try (DataOutputStream out = new DataOutputStream(new FileOutputStream(money))) {
-            out.writeInt(price());
+            out.writeInt(getPrice());
             out.writeInt(getIncome());
         }
     }
 
     /**
      * read binary file
+     *
      * @param money
      * @return price and income
-     * @throws IOException 
+     * @throws IOException
      */
     public String readBinaryFile(File money) throws IOException {
         StringBuilder sb = new StringBuilder();
-        int nprice, nincome;       
+        int nprice, nincome;
         try (DataInputStream in = new DataInputStream(new FileInputStream(money))) {
             boolean end = false;
             while (!end) {
                 try {
                     nprice = in.readInt();
                     nincome = in.readInt();
-                    sb.append(String.format(" Vse stalo %1dKc a vydelek je %1dKc%n", nprice, nincome));
+                    sb.append(String.format("%n Vse stalo %1dKc a vydelek je %1dKc%n", nprice, nincome));
 
                 } catch (EOFException e) {
                     end = true;
@@ -122,18 +152,19 @@ public class Money {
         Money m = new Money();
         Owner r = new Owner();
         Customer c = new Customer();
-        //c.loadCustomer(new File("zkouska.txt"));
-       // r.loadOwner(new File("zkouska2.txt"));
-        m.price();
-        int price = 100;
+        c.loadCustomer(new File("zkouska.txt"));
+        r.loadOwner(new File("zkouska2.txt"));
+        //int price = 100;
         int income = 500;
         m.moneyFromCustomer(income);
-        m.setPrice(price);
+        //m.setPrice(price);
         //System.out.println(m);
-        m.safeBinaryFile(new File("zkouska3.dat"));
+        //m.safeBinaryFile(new File("zkouska3.dat"));
         System.out.println(m.readBinaryFile(new File("zkouska3.dat")));
         System.out.println(m.income());
+        System.out.println(m.price());
         //System.out.println(m);
+
     }
 
 }

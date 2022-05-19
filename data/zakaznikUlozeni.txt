@@ -1,0 +1,15 @@
+   Pocet      Nazev
+  5 kusu       Mila
+ 10 kusu    Horalka
+  9 kusu   Tatranka
+ 11 kusu    Fidorka
+  5 kusu    Preclik
+  6 kusu      Chleb
+ 10 kusu       Voda
+ 10 kusu       Dzus
+ 12 kusu  Coca-Cola
+  7 kusu     Sprite
+  8 kusu       Pivo
+  8 kusu       Kava
+ 20 kusu        Caj
+  5 kusu     Jablko

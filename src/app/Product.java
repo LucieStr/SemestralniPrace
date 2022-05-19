@@ -22,6 +22,15 @@ public class Product implements Comparable<Product> {
         this.what = what;
     }
 
+    public Product(Product p) {
+        this.name = p.name;
+        this.amount = p.amount;
+        this.what = p.what;
+    }
+//    Product(Product product) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
+
     public String getName() {
         return name;
     }
@@ -36,8 +45,9 @@ public class Product implements Comparable<Product> {
 
     /**
      * get lower amount of product
+     *
      * @param amount
-     * @param name 
+     * @param name
      */
     public void getProduct(int amount, String name) {
         if (amount > this.amount) {
@@ -50,11 +60,12 @@ public class Product implements Comparable<Product> {
 
     /**
      * get new amount of product
+     *
      * @param amount
-     * @param name 
+     * @param name
      */
     public void addProduct(int amount, String name) {
-        this.amount = amount;
+        this.amount = this.amount + amount;
     }
 
     @Override

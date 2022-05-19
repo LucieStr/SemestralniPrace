@@ -9,5 +9,5 @@ package utils;
  * @author lucka
  */
 public enum Income {
-    PRODELEK, VYDELEK, NEPRODELEK;
+    PRODELEK, VYDELEK;
 }

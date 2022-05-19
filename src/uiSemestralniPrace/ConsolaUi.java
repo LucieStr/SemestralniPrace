@@ -1,9 +1,17 @@
 package uiSemestralniPrace;
 
+import app.Product;
+import app.TabOwner;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -17,6 +25,7 @@ import javax.swing.JPanel;
  */
 public class ConsolaUi {
 
+    private int choice;
     private static Scanner sc = new Scanner(System.in);
     private static app.Customer customer;
     private static app.Owner owner;
@@ -24,17 +33,26 @@ public class ConsolaUi {
     private static String parent;
     private static File dataDirectory;
 
-    public static void main(String[] args) throws IOException { //IO??
+    public static void main(String[] args) throws IOException { //IO??  
+        String[][] tabOw, tabCus;
         boolean end = false;
         int choice;
         parent = System.getProperty("user.dir") + File.separator + "data";
         dataDirectory = new File(parent);
+        owner = new app.Owner();
+        money = new app.Money();
+        customer = new app.Customer();
+        tabOw = load(new File(dataDirectory, "majitel1.txt"));
+        parselOw(tabOw);
+        tabCus = load(new File(dataDirectory, "zakaznik.txt"));
+        parselCus(tabCus);
         do {
             System.out.println("Kdo jsi?");
             displayMenu();
             choice = sc.nextInt();
             switch (choice) {
                 case 1:
+
                     owner();
                     break;
                 case 2:
@@ -49,7 +67,7 @@ public class ConsolaUi {
             }
         } while (!end);
     }
-    
+
     /**
      * display menu if owner or customer
      */
@@ -58,17 +76,15 @@ public class ConsolaUi {
         System.out.println("2 = zakaznik");
         System.out.println("0 = konec");
     }
-    
+
     /**
      * menu for owner
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    private static void owner() throws IOException { 
+    private static void owner() throws IOException {
         boolean end = false;
         int choice;
-        owner = new app.Owner();
-        money = new app.Money();
-        customer = new app.Customer();
         do {
             displayMenuOwner();
             choice = sc.nextInt();
@@ -107,11 +123,10 @@ public class ConsolaUi {
 
     /**
      * menu for customer
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     private static void customer() throws IOException { //muze tam byt IOException???
-        customer = new app.Customer();
-        money = new app.Money();
         System.out.println("Vitam te v Horskem stanku.");
         System.out.println("Kde zaplatis kolik budes chtit.");
         String date = customer.date();
@@ -160,8 +175,7 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void displayProductsByAmount() throws IOException { // vyhazuje vickrat po pridani produktu
-        customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
+    private static void displayProductsByAmount() throws IOException {
         customer.getTabCustomer();
         customer.sortByAmount();
         System.out.println(customer);
@@ -172,81 +186,187 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void displayPrice() throws IOException { 
-        owner.loadOwner(new File(dataDirectory, "majitel1.txt"));
+    private static void displayPrice() throws IOException {
         System.out.println(owner);
     }
 
     /**
      * get money from customer
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    private static void pay() throws IOException{ 
-        System.out.println("Zadejte castku");
-        money.moneyFromCustomer(sc.nextInt());
-        System.out.println("Dekuju za zaplaceni");
-        money.safeBinaryFile(new File(dataDirectory,"money.dat"));
+    private static void pay() throws IOException {
+        try {
 
+            try {
+                System.out.println("Zadejte castku");
+                money.moneyFromCustomer(sc.nextInt());
+
+            } catch (InputMismatchException e) {
+                System.out.println("Spatne zadana castka");
+            }
+
+            System.out.println("Dekuju za zaplaceni");
+            money.safeBinaryFile(new File(dataDirectory, "money.dat"));
+        } catch (IOException e) {
+            System.out.println("Chyba pri praci se souborem");
+        }
     }
 
     /**
      * load what product customer pick
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    private static void pickProduct() throws IOException { 
-        customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
-        System.out.println("Napiste nazev produktu a pocet");
-        String name = sc.next();
-        int amount = sc.nextInt();
-        customer.pickProduct(name, amount);
-        //customer.safeCustomer(new File(dataDirectory, "zakaznik.txt"));
+    private static void pickProduct() throws IOException {
+        try {
+            System.out.println("Napiste nazev produktu a pocet");
+            String name = sc.next();
+            int amount = sc.nextInt();
+            customer.pickProduct(name, amount);
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Zkuste to znovu");
+        }
+        customer.saveCustomer(new File(dataDirectory, "zakaznikUlozeni.txt")); //?
     }
-    
+
     /**
      * upgrade amount of products
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    private static void addProduct() throws IOException { 
-        customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
-        System.out.println("Napiste nazev a mnozstvi produktu, ktere chcete pridat");
-        customer.addproduct(sc.next(), sc.nextInt());
-        //customer.safeCustomer(new File(dataDirectory, "zakaznik.txt"));
+    private static void addProduct() throws IOException {
+        try {
+            System.out.println("Napiste nazev a mnozstvi produktu, ktere chcete pridat");
+            customer.addproduct(sc.next(), sc.nextInt());
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Zkuste to znovu");
+        }
+        customer.saveCustomer(new File(dataDirectory, "zakaznikUlozeni.txt")); //?
+
     }
-    
+
     /**
      * display products sort by what it is (food or drink)
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    private static void displayProducts() throws IOException { //kdyz prodam produkt vzhazuje dvakrat
-              customer.loadCustomer(new File(dataDirectory, "zakaznik.txt"));
-              customer.sortByWhat();
-              System.out.println(customer);
+    private static void displayProducts() {
+        customer.getTabCustomer();
+        customer.sortByWhat();
+        System.out.println(customer);
     }
 
     /**
      * show map
      */
-    private static void showMap() {  
-     try{
-       BufferedImage img = ImageIO.read(new File(dataDirectory,"map.jpg"));
-     JLabel pick = new JLabel(new ImageIcon(img));
-     JPanel jPanel = new JPanel();
-     jPanel.add(pick);
-     JFrame f = new JFrame();
-     f.setSize(new Dimension(img.getWidth(),img.getHeight()));
-     f.add(jPanel);
-     f.setVisible(true);
-     }catch(IOException e){        
-     }
+    private static void showMap() {
+        try {
+            BufferedImage img = ImageIO.read(new File(dataDirectory, "map.jpg"));
+            JLabel pick = new JLabel(new ImageIcon(img));
+            JPanel jPanel = new JPanel();
+            jPanel.add(pick);
+            JFrame f = new JFrame();
+            f.setSize(new Dimension(img.getWidth(), img.getHeight()));
+            f.add(jPanel);
+            f.setVisible(true);
+        } catch (IOException e) {
+            System.out.println("Chyba pri praci se souborem");
+        }
     }
 
     /**
      * display file with price and income
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     private static void displayMoney() throws IOException {
-        System.out.println(money.readBinaryFile(new File(dataDirectory,"money.dat"))); //nemuze se zobrazit pokud neni vydelek
-        System.out.println(money.income());
-        
+        try {
+            System.out.println(money.readBinaryFile(new File(dataDirectory, "money.dat"))); //nemuze se zobrazit pokud neni vydelek
+            System.out.println(money.income());
+        } catch (IOException e) {
+            System.out.println("Chyba pri praci se souborem");
+        }
+
+    }
+
+    public static String[][] load(File nameFile) throws IOException {
+        int i = 0;
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                i++;
+            }
+        }
+        String[][] tab = new String[i][1];
+        i = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                tab[i][0] = line;
+                i++;
+            }
+            return tab;
+        }
+    }
+
+    private static void parselOw(String[][] tab) {
+        List<TabOwner> tabOwner = new ArrayList<>();
+        String parts;
+        String[] split;
+        TabOwner r;
+        for (int i = 0; i < tab.length; i++) {
+            parts = tab[i][0];
+            split = parts.split("[ ]+");
+            r = new TabOwner(split[0], Integer.parseInt(split[1]));
+            tabOwner.add(r);
+
+        }
+        owner.saveOwnertab(tabOwner);
+    }
+
+    private static void parselCus(String[][] tab) {
+        List<Product> tabCustomer = new ArrayList<>();
+        String parts;
+        String[] split;
+        Product r;
+        for (int i = 0; i < tab.length; i++) {
+            parts = tab[i][0];
+            split = parts.split("[ ]+");
+            r = new Product(Integer.parseInt(split[0]), split[1], split[2]);
+            tabCustomer.add(r);
+
+        }
+        customer.saveCustomertab(tabCustomer);
+    }
+
+    public static int[] parseAmount() throws IOException {
+        String[][]tab = load(new File(dataDirectory, "zakaznik.txt"));
+        int[] amount = new int[tab.length];
+        String parts;
+        String[] split;
+        for (int i=0; i < amount.length; i++) {
+            parts = tab[i][0];
+            split = parts.split("[ ]+");
+            amount[i] = Integer.parseInt(split[0]);
+        }
+        return amount;
+    }
+    
+        public static int[] parsePOP() throws IOException {
+        String[][]tab = load(new File(dataDirectory, "majitel.txt"));
+        int[] price = new int[tab.length];
+        String parts;
+        String[] split;
+        for (int i = 0; i<price.length; i++) {
+            parts = tab[i][0];
+            split = parts.split("[ ]+");
+            price[i] = Integer.parseInt(split[1]);
+            
+        }
+        return price;
     }
 }

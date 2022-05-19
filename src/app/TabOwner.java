@@ -14,6 +14,11 @@ public class TabOwner {
         this.priceOneProduct = priceOneProduct;
     }
 
+    public TabOwner(TabOwner t) {
+        this.name = t.name;
+        this.priceOneProduct = t.priceOneProduct;
+    }
+
     public TabOwner(String name, int price) {
         this.name = name;
         this.priceOneProduct = price;

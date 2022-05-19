@@ -27,7 +27,6 @@ import java.util.Scanner;
 public class Customer {
 
     private String product;
-
     private List<Product> tabCustomer;
 
     public Customer() {
@@ -37,9 +36,10 @@ public class Customer {
 
     /**
      * load file for customer
+     *
      * @param customerFile
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     public void loadCustomer(File customerFile) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
@@ -49,31 +49,37 @@ public class Customer {
             br.readLine();
             while ((line = br.readLine()) != null) {
                 parts = line.split("[ ]+");
-                r = new Product(Integer.parseInt(parts[0]), parts[1],parts[2]);
+                r = new Product(Integer.parseInt(parts[0]), parts[1], parts[2]);
                 tabCustomer.add(r);
             }
         }
     }
 
     /**
-     * safe file for customer
+     * save file for customer
+     *
      * @param result
-     * @throws IOException 
+     * @throws IOException
      */
-    public void safeCustomer(File result) throws IOException { //ulozit bez uprav
+    public void saveCustomer(File result) throws IOException { //ulozit bez uprav
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(result)))) {
             pw.println(String.format("%8s %10s", "Pocet", "Nazev"));
-            for (Product product : tabCustomer) {
-                pw.println(product);
+            for (Product p : tabCustomer) {
+                pw.println(p);
 
             }
         }
     }
 
+    public void saveCustomertab(List<Product> tab) {
+        this.tabCustomer = tab;
+    }
+
     /**
      * check if name of product is correct
+     *
      * @param name
-     * @return 
+     * @return
      */
     private String checkName(String name) {
         if (!name.matches("[A-Z][a-z]+")) {
@@ -84,6 +90,7 @@ public class Customer {
 
     /**
      * find year, month and day
+     *
      * @return date
      */
     public String date() {
@@ -97,16 +104,17 @@ public class Customer {
 
     public List<Product> getTabCustomer() {
         ArrayList<Product> copy = new ArrayList<>();
-        for (Product product : tabCustomer) {
-            copy.add(new Product());
+        for (Product p : tabCustomer) {
+            copy.add(new Product(p));
         }
         return copy;
     }
 
     /**
-     * lower amount of product 
+     * lower amount of product
+     *
      * @param name
-     * @param amount 
+     * @param amount
      */
     public void pickProduct(String name, int amount) {
         Product p = findByName(name);
@@ -116,8 +124,9 @@ public class Customer {
 
     /**
      * upgrade amount of product
+     *
      * @param name
-     * @param amount 
+     * @param amount
      */
     public void addproduct(String name, int amount) {
         Product p = findByName(name);
@@ -126,6 +135,7 @@ public class Customer {
 
     /**
      * find product by name
+     *
      * @param name
      * @return 
      */
@@ -139,6 +149,18 @@ public class Customer {
         throw new NoSuchElementException("produkt s nazvem " + name + " neexistuje.");
     }
 
+    
+    public int[][] getArrayAmount() { //?
+        int[][] amount = new int[tabCustomer.size()][1];
+              String[][] cuArray = tabCustomer.toArray(new String[tabCustomer.size()][3]);
+            for (int i = 0; i < amount.length; i++) {
+                amount[i][1] = Integer.parseInt(cuArray[i][0]);
+
+            }
+        return amount;
+    }
+
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -159,15 +181,16 @@ public class Customer {
     /**
      * sort tabCustomer by what it is (food or drink)
      */
-    public void sortByWhat(){
+    public void sortByWhat() {
         Collections.sort(tabCustomer);
     }
+
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         Customer c = new Customer();
         c.loadCustomer(new File("zkouska.txt"));
         //System.out.println(c);
-       c.getTabCustomer();
+        c.getTabCustomer();
         //System.out.println(c);
         //c.findByName("Miudh");
         c.addproduct("Mila", 20);
@@ -176,6 +199,7 @@ public class Customer {
         System.out.println(c);
         c.sortByWhat();
         System.out.println(c);
+
     }
 
 }
