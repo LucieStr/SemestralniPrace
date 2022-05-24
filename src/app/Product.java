@@ -27,9 +27,6 @@ public class Product implements Comparable<Product> {
         this.amount = p.amount;
         this.what = p.what;
     }
-//    Product(Product product) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
 
     public String getName() {
         return name;

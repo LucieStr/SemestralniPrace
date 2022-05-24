@@ -195,21 +195,19 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void pay() throws IOException {
+    private static void pay() throws IOException { //Input mismatch exception
         try {
-
             try {
                 System.out.println("Zadejte castku");
                 money.moneyFromCustomer(sc.nextInt());
-
-            } catch (InputMismatchException e) {
-                System.out.println("Spatne zadana castka");
+                System.out.println("Dekuju za zaplaceni");
+                money.safeBinaryFile(new File(dataDirectory, "money.dat"));
+            } catch (IOException e) {
+                System.out.println("Chyba pri praci se souborem");
             }
-
-            System.out.println("Dekuju za zaplaceni");
-            money.safeBinaryFile(new File(dataDirectory, "money.dat"));
-        } catch (IOException e) {
-            System.out.println("Chyba pri praci se souborem");
+        } catch (InputMismatchException s) {
+            System.out.println(s.getMessage());
+            System.out.println("Zkuste to znovu");
         }
     }
 
@@ -220,15 +218,22 @@ public class ConsolaUi {
      */
     private static void pickProduct() throws IOException {
         try {
+            int amount =0 ;
             System.out.println("Napiste nazev produktu a pocet");
             String name = sc.next();
-            int amount = sc.nextInt();
+            try{
+            if(sc.hasNextInt()){
+            amount = sc.nextInt();
+            }
             customer.pickProduct(name, amount);
+            }catch (InputMismatchException e){
+                System.out.println("Spatne zadana caska");
+            }
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());
             System.out.println("Zkuste to znovu");
         }
-        customer.saveCustomer(new File(dataDirectory, "zakaznikUlozeni.txt")); //?
+        customer.saveCustomer(new File(dataDirectory, "zakaznikUlozeni.txt"));
     }
 
     /**
@@ -244,7 +249,7 @@ public class ConsolaUi {
             System.out.println(e.getMessage());
             System.out.println("Zkuste to znovu");
         }
-        customer.saveCustomer(new File(dataDirectory, "zakaznikUlozeni.txt")); //?
+        customer.saveCustomer(new File(dataDirectory, "zakaznikUlozeni.txt"));
 
     }
 
@@ -284,6 +289,7 @@ public class ConsolaUi {
      */
     private static void displayMoney() throws IOException {
         try {
+            money.safeBinaryFile(new File(dataDirectory, "money.dat"));
             System.out.println(money.readBinaryFile(new File(dataDirectory, "money.dat"))); //nemuze se zobrazit pokud neni vydelek
             System.out.println(money.income());
         } catch (IOException e) {
@@ -292,7 +298,7 @@ public class ConsolaUi {
 
     }
 
-    public static String[][] load(File nameFile) throws IOException {
+    public static String[][] load(File nameFile) throws IOException { //chyba pri praci se souborem
         int i = 0;
         String line;
         try (BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
@@ -328,7 +334,7 @@ public class ConsolaUi {
         owner.saveOwnertab(tabOwner);
     }
 
-    private static void parselCus(String[][] tab) {
+    public static void parselCus(String[][] tab) {
         List<Product> tabCustomer = new ArrayList<>();
         String parts;
         String[] split;
@@ -338,35 +344,34 @@ public class ConsolaUi {
             split = parts.split("[ ]+");
             r = new Product(Integer.parseInt(split[0]), split[1], split[2]);
             tabCustomer.add(r);
-
         }
         customer.saveCustomertab(tabCustomer);
     }
 
-    public static int[] parseAmount() throws IOException {
-        String[][]tab = load(new File(dataDirectory, "zakaznik.txt"));
-        int[] amount = new int[tab.length];
-        String parts;
-        String[] split;
-        for (int i=0; i < amount.length; i++) {
-            parts = tab[i][0];
-            split = parts.split("[ ]+");
-            amount[i] = Integer.parseInt(split[0]);
-        }
-        return amount;
-    }
-    
-        public static int[] parsePOP() throws IOException {
-        String[][]tab = load(new File(dataDirectory, "majitel.txt"));
-        int[] price = new int[tab.length];
-        String parts;
-        String[] split;
-        for (int i = 0; i<price.length; i++) {
-            parts = tab[i][0];
-            split = parts.split("[ ]+");
-            price[i] = Integer.parseInt(split[1]);
-            
-        }
-        return price;
-    }
+//    public static int[] parseAmount() throws IOException {
+//        String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
+//        int[] amount = new int[tab.length];
+//        String parts;
+//        String[] split;
+//        for (int i = 0; i < amount.length; i++) {
+//            parts = tab[i][0];
+//            split = parts.split("[ ]+");
+//            amount[i] = Integer.parseInt(split[0]);
+//        }
+//        return amount;
+//    }
+//
+//    public static int[] parsePOP() throws IOException {
+//        String[][] tab = load(new File(dataDirectory, "majitel.txt"));
+//        int[] price = new int[tab.length];
+//        String parts;
+//        String[] split;
+//        for (int i = 0; i < price.length; i++) {
+//            parts = tab[i][0];
+//            split = parts.split("[ ]+");
+//            price[i] = Integer.parseInt(split[1]);
+//
+//        }
+//        return price;
+//    }
 }

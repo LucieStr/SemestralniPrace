@@ -20,11 +20,11 @@ import java.util.List;
 public class Money {
 
     private int income;
-    private int price;
-    private static Customer customer;
-    private static Owner owner;
-    private static Product product;
-    private static TabOwner tabOwner;
+    private int price = 2677;
+//    private static Customer customer;
+//    private static Owner owner;
+//    private static Product product;
+//    private static TabOwner tabOwner;
 
     public Money() {
         this.income = income;
@@ -45,7 +45,8 @@ public class Money {
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.price = 2677;
+        //this.price = price+(priceOneProduct * amount);
     }
 
     public int getPrice() {
@@ -57,13 +58,10 @@ public class Money {
      *
      * @param money
      */
-    public void moneyFromCustomer(int money) {
-        try{
+    public void moneyFromCustomer(int money) { //podminka kdyz money se nerovna int
         this.income = income + money;
         setIncome(this.income);
-        }catch(InputMismatchException e){
-            System.out.println("Spatne zadana cena");
-        }
+
     }
 
     /**
@@ -74,6 +72,8 @@ public class Money {
     public Income income() {
         if (income > price) {
             return Income.VYDELEK;
+        } else if (income == price) {
+            return Income.NEPRODELEK;
         } else {
             return Income.PRODELEK;
         }
@@ -83,25 +83,25 @@ public class Money {
      * sum price from amount and price from one product
      *
      * @return
+     * @throws java.io.IOException
      */
     public int price() throws IOException { //nevim 
         //owner = new Owner();
         //customer = new Customer();
-        int amount, pOP;
-        int [] am = uiSemestralniPrace.ConsolaUi.parseAmount();
-        int [] p = uiSemestralniPrace.ConsolaUi.parsePOP();
-//        List<Product> cu = customer.getTabCustomer();
-//        List<TabOwner> ow = owner.getTabOwner();
-//        String[][] cuArray = cu.toArray(new String[cu.size()][3]);
-//        String[][] owArray = ow.toArray(new String[cu.size()][2]);
-        for (int i = 0; i < am.length; i++) {
-            amount = am[i];
-            pOP = p[i];
-            this.price = this.price + (amount * pOP);
-
-        }
-
-        return price;
+//        int amount, pOP;
+//        int [] am = uiSemestralniPrace.ConsolaUi.parseAmount();
+//        int [] p = uiSemestralniPrace.ConsolaUi.parsePOP();
+////        List<Product> cu = customer.getTabCustomer();
+////        List<TabOwner> ow = owner.getTabOwner();
+////        String[][] cuArray = cu.toArray(new String[cu.size()][3]);
+////        String[][] owArray = ow.toArray(new String[cu.size()][2]);
+//        for (int i = 0; i < am.length; i++) {
+//            amount = am[i];
+//            pOP = p[i];
+//            this.price = this.price + (amount * pOP);
+        this.price = 2677;
+//        }
+        return this.price;
     }
 
     /**
@@ -134,7 +134,8 @@ public class Money {
                     nprice = in.readInt();
                     nincome = in.readInt();
                     sb.append(String.format("%n Vse stalo %1dKc a vydelek je %1dKc%n", nprice, nincome));
-
+                    income = nincome;
+                    price = nprice;
                 } catch (EOFException e) {
                     end = true;
                 }
@@ -157,12 +158,13 @@ public class Money {
         //int price = 100;
         int income = 500;
         m.moneyFromCustomer(income);
+        m.price();
         //m.setPrice(price);
         //System.out.println(m);
-        //m.safeBinaryFile(new File("zkouska3.dat"));
+        m.safeBinaryFile(new File("zkouska3.dat"));
         System.out.println(m.readBinaryFile(new File("zkouska3.dat")));
         System.out.println(m.income());
-        System.out.println(m.price());
+        System.out.println(m.getPrice());
         //System.out.println(m);
 
     }

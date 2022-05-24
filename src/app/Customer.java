@@ -137,9 +137,9 @@ public class Customer {
      * find product by name
      *
      * @param name
-     * @return 
+     * @return ArrayList 
      */
-    private Product findByName(String name) { //upravit javaDoc
+    private Product findByName(String name) { 
         checkName(name);
         for (Product tab : tabCustomer) {
             if (tab.getName() == null ? name == null : tab.getName().equals(name)) {
@@ -149,16 +149,16 @@ public class Customer {
         throw new NoSuchElementException("produkt s nazvem " + name + " neexistuje.");
     }
 
-    
-    public int[][] getArrayAmount() { //?
-        int[][] amount = new int[tabCustomer.size()][1];
-              String[][] cuArray = tabCustomer.toArray(new String[tabCustomer.size()][3]);
-            for (int i = 0; i < amount.length; i++) {
-                amount[i][1] = Integer.parseInt(cuArray[i][0]);
-
-            }
-        return amount;
-    }
+//    
+//    public int[][] getArrayAmount() { //?
+//        int[][] amount = new int[tabCustomer.size()][1];
+//              String[][] cuArray = tabCustomer.toArray(new String[tabCustomer.size()][3]);
+//            for (int i = 0; i < amount.length; i++) {
+//                amount[i][1] = Integer.parseInt(cuArray[i][0]);
+//
+//            }
+//        return amount;
+//    }
 
     
     @Override
@@ -173,7 +173,7 @@ public class Customer {
     /**
      * sort by amount
      */
-    public void sortByAmount() { //zmenit na jidlo a piti
+    public void sortByAmount() {
         Comparator cbp = new utils.ComparatorProductByAmount();
         Collections.sort(tabCustomer, cbp);
     }
