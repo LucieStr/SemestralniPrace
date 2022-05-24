@@ -34,38 +34,42 @@ public class ConsolaUi {
     private static File dataDirectory;
 
     public static void main(String[] args) throws IOException { //IO??  
-        String[][] tabOw, tabCus;
-        boolean end = false;
-        int choice;
-        parent = System.getProperty("user.dir") + File.separator + "data";
-        dataDirectory = new File(parent);
-        owner = new app.Owner();
-        money = new app.Money();
-        customer = new app.Customer();
-        tabOw = load(new File(dataDirectory, "majitel1.txt"));
-        parselOw(tabOw);
-        tabCus = load(new File(dataDirectory, "zakaznik.txt"));
-        parselCus(tabCus);
-        do {
-            System.out.println("Kdo jsi?");
-            displayMenu();
-            choice = sc.nextInt();
-            switch (choice) {
-                case 1:
+        try {
+            String[][] tabOw, tabCus;
+            boolean end = false;
+            int choice;
+            parent = System.getProperty("user.dir") + File.separator + "data";
+            dataDirectory = new File(parent);
+            owner = new app.Owner();
+            money = new app.Money();
+            customer = new app.Customer();
+            tabOw = load(new File(dataDirectory, "majitel1.txt"));
+            parselOw(tabOw);
+            tabCus = load(new File(dataDirectory, "zakaznik.txt"));
+            parselCus(tabCus);
+            do {
+                System.out.println("Kdo jsi?");
+                displayMenu();
+                choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
 
-                    owner();
-                    break;
-                case 2:
-                    customer();
-                    break;
-                case 0:
-                    System.out.println("konec");
-                    end = true;
-                    break;
-                default:
-                    System.out.println("neplatna volba ");
-            }
-        } while (!end);
+                        owner();
+                        break;
+                    case 2:
+                        customer();
+                        break;
+                    case 0:
+                        System.out.println("konec");
+                        end = true;
+                        break;
+                    default:
+                        System.out.println("neplatna volba ");
+                }
+            } while (!end);
+        } catch (IOException e) {
+            System.out.println("Neco se pokazilo");
+        }
     }
 
     /**
@@ -83,31 +87,38 @@ public class ConsolaUi {
      * @throws IOException
      */
     private static void owner() throws IOException {
-        boolean end = false;
-        int choice;
-        do {
-            displayMenuOwner();
-            choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    displayProductsByAmount();
-                    break;
-                case 2:
-                    addProduct();
-                    break;
-                case 3:
-                    displayMoney();
-                    break;
-                case 4:
-                    displayPrice();
-                    break;
-                case 0:
-                    end = true;
-                    break;
-                default:
-                    System.out.println("neplatna volba");
-            }
-        } while (!end);
+        try {
+            boolean end = false;
+            int choice;
+            do {
+                displayMenuOwner();
+                choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        displayProductsByAmount();
+                        break;
+                    case 2:
+                        addProduct();
+                        break;
+                    case 3:
+                        displayMoney();
+                        break;
+                    case 4:
+                        displayPrice();
+                        break;
+//                    case 5:
+//                        setPOP();
+//                        break;
+                    case 0:
+                        end = true;
+                        break;
+                    default:
+                        System.out.println("neplatna volba");
+                }
+            } while (!end);
+        } catch (IOException e) {
+            System.out.println("Neco se pokazilo");
+        }
     }
 
     /**
@@ -118,6 +129,7 @@ public class ConsolaUi {
         System.out.println("2 = pridat produkty");
         System.out.println("3 = informace o vydelku");
         System.out.println("4 = zobrazit ceny jednotlivych produktu");
+//        System.out.println("5 = zmenit cenu produktu");
         System.out.println("0 = zpet");
     }
 
@@ -127,36 +139,40 @@ public class ConsolaUi {
      * @throws IOException
      */
     private static void customer() throws IOException { //muze tam byt IOException???
-        System.out.println("Vitam te v Horskem stanku.");
-        System.out.println("Kde zaplatis kolik budes chtit.");
-        String date = customer.date();
-        System.out.println("Dnes je " + date);
-        boolean end = false;
-        int choice;
+        try {
+            System.out.println("Vitam te v Horskem stanku.");
+            System.out.println("Kde zaplatis kolik budes chtit.");
+            String date = customer.date();
+            System.out.println("Dnes je " + date);
+            boolean end = false;
+            int choice;
 
-        do {
-            displayMenuCustomer();
-            choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    displayProducts();
-                    break;
-                case 2:
-                    pickProduct();
-                    break;
-                case 3:
-                    pay();
-                    break;
-                case 4:
-                    showMap();
-                    break;
-                case 0:
-                    end = true;
-                    break;
-                default:
-                    System.out.println("neplatna volba");
-            }
-        } while (!end);
+            do {
+                displayMenuCustomer();
+                choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        displayProducts();
+                        break;
+                    case 2:
+                        pickProduct();
+                        break;
+                    case 3:
+                        pay();
+                        break;
+                    case 4:
+                        showMap();
+                        break;
+                    case 0:
+                        end = true;
+                        break;
+                    default:
+                        System.out.println("neplatna volba");
+                }
+            } while (!end);
+        } catch (IOException e) {
+            System.out.println("Neco se pokazilo");
+        }
     }
 
     /**
@@ -175,7 +191,7 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void displayProductsByAmount() throws IOException {
+    private static void displayProductsByAmount() {
         customer.getTabCustomer();
         customer.sortByAmount();
         System.out.println(customer);
@@ -186,9 +202,19 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void displayPrice() throws IOException {
+    private static void displayPrice() {
         System.out.println(owner);
     }
+
+//    private static void setPOP() {
+//        try {
+//            System.out.println("Zadejte nazev produktu a novou cenu");
+//            owner.setPriceOneProduct(sc.next(), sc.nextInt());
+//        } catch (NoSuchElementException e) {
+//            System.out.println(e.getMessage());
+//            System.out.println("Zkuste to znovu");
+//        }
+//    }
 
     /**
      * get money from customer
@@ -201,7 +227,7 @@ public class ConsolaUi {
                 System.out.println("Zadejte castku");
                 money.moneyFromCustomer(sc.nextInt());
                 System.out.println("Dekuju za zaplaceni");
-                money.safeBinaryFile(new File(dataDirectory, "money.dat"));
+                money.saveBinaryFile(new File(dataDirectory, "price.dat"));
             } catch (IOException e) {
                 System.out.println("Chyba pri praci se souborem");
             }
@@ -218,15 +244,15 @@ public class ConsolaUi {
      */
     private static void pickProduct() throws IOException {
         try {
-            int amount =0 ;
+            int amount = 0;
             System.out.println("Napiste nazev produktu a pocet");
             String name = sc.next();
-            try{
-            if(sc.hasNextInt()){
-            amount = sc.nextInt();
-            }
-            customer.pickProduct(name, amount);
-            }catch (InputMismatchException e){
+            try {
+                if (sc.hasNextInt()) {
+                    amount = sc.nextInt();
+                }
+                customer.pickProduct(name, amount);
+            } catch (InputMismatchException e) {
                 System.out.println("Spatne zadana caska");
             }
         } catch (NoSuchElementException e) {
@@ -245,6 +271,7 @@ public class ConsolaUi {
         try {
             System.out.println("Napiste nazev a mnozstvi produktu, ktere chcete pridat");
             customer.addproduct(sc.next(), sc.nextInt());
+            System.out.println("Pridano ");
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());
             System.out.println("Zkuste to znovu");
@@ -289,8 +316,14 @@ public class ConsolaUi {
      */
     private static void displayMoney() throws IOException {
         try {
-            money.safeBinaryFile(new File(dataDirectory, "money.dat"));
-            System.out.println(money.readBinaryFile(new File(dataDirectory, "money.dat"))); //nemuze se zobrazit pokud neni vydelek
+//            int income = money.getIncome();
+//            int price = money.price();
+            money.saveBinaryFile(new File(dataDirectory, "price.dat"));
+        } catch (IOException e) {
+            System.out.println("Chyba pri praci se souborem");
+        }
+        try {
+            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat"))); //nemuze se zobrazit pokud neni vydelek
             System.out.println(money.income());
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
@@ -348,30 +381,31 @@ public class ConsolaUi {
         customer.saveCustomertab(tabCustomer);
     }
 
-//    public static int[] parseAmount() throws IOException {
-//        String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
-//        int[] amount = new int[tab.length];
-//        String parts;
-//        String[] split;
-//        for (int i = 0; i < amount.length; i++) {
-//            parts = tab[i][0];
-//            split = parts.split("[ ]+");
-//            amount[i] = Integer.parseInt(split[0]);
-//        }
-//        return amount;
-//    }
-//
-//    public static int[] parsePOP() throws IOException {
-//        String[][] tab = load(new File(dataDirectory, "majitel.txt"));
-//        int[] price = new int[tab.length];
-//        String parts;
-//        String[] split;
-//        for (int i = 0; i < price.length; i++) {
-//            parts = tab[i][0];
-//            split = parts.split("[ ]+");
-//            price[i] = Integer.parseInt(split[1]);
-//
-//        }
-//        return price;
-//    }
+    public static String[][] parseAmount() throws IOException {
+        String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
+        String[][] amount = new String[tab.length][2];
+        String parts;
+        String[] split;
+        for (int i = 0; i < amount.length; i++) {
+            parts = tab[i][0];
+            split = parts.split("[ ]+");
+            amount[i][0] = split[0];
+            amount[i][1] = split[1];
+        }
+        return amount;
+    }
+
+    public static String[][] parsePOP() throws IOException {
+        String[][] tab = load(new File(dataDirectory, "majitel1.txt"));
+        String[][] price = new String[tab.length][2];
+        String parts;
+        String[] split;
+        for (int i = 0; i < price.length; i++) {
+            parts = tab[i][0];
+            split = parts.split("[ ]+");
+            price[i][0] = split[0];
+            price[i][1] = split[1];
+        }
+        return price;
+    }
 }

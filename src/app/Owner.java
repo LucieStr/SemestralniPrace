@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.NoSuchElementException;
 
 /**
  *
  * @author lucka
  */
-public class Owner  {
-    
+public class Owner {
+
     private String name;
     private List<TabOwner> tabOwner;
 
@@ -26,7 +26,6 @@ public class Owner  {
         this.tabOwner = new ArrayList<>();
     }
 
-
     public List<TabOwner> getTabOwner() {
         ArrayList<TabOwner> copy = new ArrayList<>();
         for (TabOwner tab : tabOwner) {
@@ -34,13 +33,14 @@ public class Owner  {
         }
         return copy;
     }
-    
-  /**
-   * load file for owner
-   * @param ownerFile
-   * @throws FileNotFoundException
-   * @throws IOException 
-   */
+
+    /**
+     * load file for owner
+     *
+     * @param ownerFile
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public void loadOwner(File ownerFile) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(ownerFile))) {
             String[] parts;
@@ -58,34 +58,38 @@ public class Owner  {
 
     /**
      * save file for owner
+     *
      * @param result
-     * @throws IOException 
+     * @throws IOException
      */
-    public void saveOwner (File result) throws IOException{
-        try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(result)))){
-            pw.println(String.format("%10s %5s","Nazev","Cena"));
+    public void saveOwner(File result) throws IOException {
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(result)))) {
+            pw.println(String.format("%10s %5s", "Nazev", "Cena"));
             for (TabOwner tab : tabOwner) {
                 pw.println(tab);
-                
+
             }
         }
     }
-    
-    public void saveOwnertab(List<TabOwner> tab){
+
+    public void saveOwnertab(List<TabOwner> tab) {
         this.tabOwner = tab;
     }
-    
+
     /**
      * upgrade price of one product
+     *
      * @param priceOneProduct
-     * @param name 
+     * @param name
      */
-    public void setPriceOneProduct(int priceOneProduct,String name) {
+    public void setPriceOneProduct(String name, int priceOneProduct) {
         for (TabOwner tab : tabOwner) {
-            if(name == null ? tab.getName() == null : name.equals(tab.getName())){
-               tab.setProductPrice(priceOneProduct);
-            }
-        }        
+            //if (tab.getName() == null ? name == null : tab.getName().equals(name)) {
+                tab.setProductPrice(priceOneProduct);
+               
+            //}
+            // throw new NoSuchElementException("Produkt s nazvem " + name + " neexistuje");
+        }
     }
 
     @Override
@@ -99,15 +103,13 @@ public class Owner  {
 
     public static void main(String[] args) throws IOException {
         Owner o = new Owner();
-        
+
         o.loadOwner(new File("zkouska2.txt"));
         System.out.println(o);
-        o.setPriceOneProduct(15, "Mila");
+        //o.setPriceOneProduct(15, "Mila");
         System.out.println(o);
         o.saveOwner(new File("zkouska4.txt"));
-      
+
     }
-
-
 
 }

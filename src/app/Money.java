@@ -10,8 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
+import static uiSemestralniPrace.ConsolaUi.load;
 
 /**
  *
@@ -20,7 +22,7 @@ import java.util.List;
 public class Money {
 
     private int income;
-    private int price = 2677;
+    private int price;
 //    private static Customer customer;
 //    private static Owner owner;
 //    private static Product product;
@@ -44,14 +46,13 @@ public class Money {
         this.income = income;
     }
 
-    public void setPrice(int price) {
-        this.price = 2677;
-        //this.price = price+(priceOneProduct * amount);
-    }
-
-    public int getPrice() {
-        return price;
-    }
+//    public void setPrice(int price) {
+//        this.price = price;
+//    }
+//
+//    public int getPrice() {
+//        return price;
+//    }
 
     /**
      * upgrade income with money from customer
@@ -82,26 +83,21 @@ public class Money {
     /**
      * sum price from amount and price from one product
      *
-     * @return
+     * @return price
      * @throws java.io.IOException
      */
-    public int price() throws IOException { //nevim 
-        //owner = new Owner();
-        //customer = new Customer();
-//        int amount, pOP;
-//        int [] am = uiSemestralniPrace.ConsolaUi.parseAmount();
-//        int [] p = uiSemestralniPrace.ConsolaUi.parsePOP();
-////        List<Product> cu = customer.getTabCustomer();
-////        List<TabOwner> ow = owner.getTabOwner();
-////        String[][] cuArray = cu.toArray(new String[cu.size()][3]);
-////        String[][] owArray = ow.toArray(new String[cu.size()][2]);
-//        for (int i = 0; i < am.length; i++) {
-//            amount = am[i];
-//            pOP = p[i];
-//            this.price = this.price + (amount * pOP);
-        this.price = 2677;
-//        }
-        return this.price;
+    public int price() throws IOException {
+        this.price = 0;
+        String[][] cus = uiSemestralniPrace.ConsolaUi.parseAmount();      
+        String[][] own = uiSemestralniPrace.ConsolaUi.parsePOP();       
+        for (int i = 0; i < cus.length; i++) {
+            for (int j = 0; j < own.length; j++) {
+                if (cus[i][1] == null ? own[j][0] == null : cus[i][1].equals(own[j][0])) {
+                    price = price+ (Integer.parseInt(cus[i][0]) * Integer.parseInt(own[j][1]));
+                }
+            }
+        }
+        return price;
     }
 
     /**
@@ -110,10 +106,12 @@ public class Money {
      * @param money
      * @throws IOException
      */
-    public void safeBinaryFile(File money) throws IOException {
+    public void saveBinaryFile(File money) throws IOException {
         try (DataOutputStream out = new DataOutputStream(new FileOutputStream(money))) {
-            out.writeInt(getPrice());
-            out.writeInt(getIncome());
+            int pri = price();
+            int income = getIncome();
+            out.writeInt(pri);
+            out.writeInt(income);
         }
     }
 
@@ -148,6 +146,35 @@ public class Money {
     public String toString() {
         return String.format("%10d %10d", this.price, this.income);
     }
+    
+
+//    public static String[][] parseAmount() throws IOException {
+//        String[][] tab = load(new File("zkouska.txt"));
+//        String[][] amount = new String[tab.length][2];
+//        String parts;
+//        String[] split;
+//        for (int i = 0; i < amount.length; i++) {
+//                parts = tab[i][0];
+//                split = parts.split("[ ]+");
+//                amount[i][0] = split[0];
+//                amount[i][1] = split[1];
+//        }
+//        return amount;
+//    }
+//
+//    public static String[][] parsePOP() throws IOException {
+//        String[][] tab = load(new File("zkouska2.txt"));
+//        String[][] price = new String[tab.length][2];
+//        String parts;
+//        String[] split;
+//        for (int i = 0; i < price.length; i++) {
+//            parts = tab[i][0];
+//            split = parts.split("[ ]+");
+//            price[i][0] = split[0];
+//            price[i][1] = split[1];
+//        }
+//        return price;
+//    }
 
     public static void main(String[] args) throws IOException {
         Money m = new Money();
@@ -161,10 +188,18 @@ public class Money {
         m.price();
         //m.setPrice(price);
         //System.out.println(m);
-        m.safeBinaryFile(new File("zkouska3.dat"));
+        //m.saveBinaryFile(new File("zkouska3.dat"));
         System.out.println(m.readBinaryFile(new File("zkouska3.dat")));
-        System.out.println(m.income());
-        System.out.println(m.getPrice());
+//        System.out.println(m.income());
+//        System.out.println(m.getPrice());
+//        String[][] am = parseAmount();
+//        for (int i = 0; i < am.length; i++) {
+//            for (int j = 0; j < 2; j++) {
+//                System.out.println(am[i][0] + am[i][1]);
+//
+//            }
+//
+//        }
         //System.out.println(m);
 
     }
