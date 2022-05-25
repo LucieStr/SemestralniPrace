@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -49,45 +48,38 @@ public class ConsolaUi {
             parselCus(tabCus);
             String input = "";
             do {
-                try {
-                    System.out.println("Kdo jsi?");
+                System.out.println("Kdo jsi?");
                 displayMenu();
-                input = sc.next();
-                choice = Integer.parseInt(input);
-                choice = sc.nextInt();
-                switch (choice) {
-                    case 1:
-
-                        owner();
-                        break;
-                    case 2:
-                        customer();
-                        break;
-                    case 0:
-                        System.out.println("konec");
-                        end = true;
-                        break;
-                    default:
-                        System.out.println("neplatna volba ");
-                }
-            } catch (NumberFormatException e) {
+                try {
+                    input = sc.next();
+                    choice = Integer.parseInt(input);
+                    switch (choice) {
+                        case 1:
+                            owner();
+                            break;
+                        case 2:
+                            customer();
+                            break;
+                        case 0:
+                            System.out.println("konec");
+                            end = true;
+                            break;
+                        default:
+                            System.out.println("neplatna volba ");
+                    }
+                } catch (NumberFormatException e) {
                     System.out.println(input + " neni cislo");
                 }
-        }
-        while (!end);
-    }
-    catch (IOException e
-
-    
-        ) {
+            } while (!end);
+        } catch (IOException e) {
             System.out.println("Neco se pokazilo");
+        }
     }
-}
 
-/**
- * display menu if owner or customer
- */
-private static void displayMenu() {
+    /**
+     * display menu if owner or customer
+     */
+    private static void displayMenu() {
         System.out.println("1 = majitel");
         System.out.println("2 = zakaznik");
         System.out.println("0 = konec");
@@ -104,12 +96,10 @@ private static void displayMenu() {
             int choice;
             String input = "";
             do {
+                displayMenuOwner();
                 try {
-                    displayMenuOwner();
                     input = sc.next();
                     choice = Integer.parseInt(input);
-                    displayMenuOwner();
-                    choice = sc.nextInt();
                     switch (choice) {
                         case 1:
                             displayProductsByAmount();
@@ -160,8 +150,8 @@ private static void displayMenu() {
             String input = "";
             int choice;
             do {
+                displayMenuCustomer();
                 try {
-                    displayMenuCustomer();
                     input = sc.next();
                     choice = Integer.parseInt(input);
                     switch (choice) {

@@ -41,7 +41,7 @@ public class Money {
      *
      * @param money
      */
-    public void moneyFromCustomer(int money) { //podminka kdyz money se nerovna int
+    public void moneyFromCustomer(int money) {  
         this.income = income + money;
         setIncome(this.income);
 
