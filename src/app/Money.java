@@ -6,14 +6,8 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.List;
-import static uiSemestralniPrace.ConsolaUi.load;
 
 /**
  *
@@ -23,10 +17,6 @@ public class Money {
 
     private int income;
     private int price;
-//    private static Customer customer;
-//    private static Owner owner;
-//    private static Product product;
-//    private static TabOwner tabOwner;
 
     public Money() {
         this.income = income;
@@ -45,14 +35,6 @@ public class Money {
     public void setIncome(int income) {
         this.income = income;
     }
-
-//    public void setPrice(int price) {
-//        this.price = price;
-//    }
-//
-//    public int getPrice() {
-//        return price;
-//    }
 
     /**
      * upgrade income with money from customer
@@ -148,40 +130,12 @@ public class Money {
     }
     
 
-//    public static String[][] parseAmount() throws IOException {
-//        String[][] tab = load(new File("zkouska.txt"));
-//        String[][] amount = new String[tab.length][2];
-//        String parts;
-//        String[] split;
-//        for (int i = 0; i < amount.length; i++) {
-//                parts = tab[i][0];
-//                split = parts.split("[ ]+");
-//                amount[i][0] = split[0];
-//                amount[i][1] = split[1];
-//        }
-//        return amount;
-//    }
-//
-//    public static String[][] parsePOP() throws IOException {
-//        String[][] tab = load(new File("zkouska2.txt"));
-//        String[][] price = new String[tab.length][2];
-//        String parts;
-//        String[] split;
-//        for (int i = 0; i < price.length; i++) {
-//            parts = tab[i][0];
-//            split = parts.split("[ ]+");
-//            price[i][0] = split[0];
-//            price[i][1] = split[1];
-//        }
-//        return price;
-//    }
-
     public static void main(String[] args) throws IOException {
         Money m = new Money();
         Owner r = new Owner();
         Customer c = new Customer();
-        c.loadCustomer(new File("zkouska.txt"));
-        r.loadOwner(new File("zkouska2.txt"));
+        //c.loadCustomer(new File("zkouska.txt"));
+        //r.loadOwner(new File("zkouska2.txt"));
         //int price = 100;
         int income = 500;
         m.moneyFromCustomer(income);

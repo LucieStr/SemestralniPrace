@@ -1,14 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package app;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,12 +12,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import utils.Library;
 
 /**
  *
  * @author lucka
  */
-public class Customer {
+public class Customer implements Library {
 
     private String product;
     private List<Product> tabCustomer;
@@ -34,26 +28,6 @@ public class Customer {
         this.tabCustomer = new ArrayList<>();
     }
 
-    /**
-     * load file for customer
-     *
-     * @param customerFile
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    public void loadCustomer(File customerFile) throws FileNotFoundException, IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
-            String[] parts;
-            String line;
-            Product r;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                parts = line.split("[ ]+");
-                r = new Product(Integer.parseInt(parts[0]), parts[1], parts[2]);
-                tabCustomer.add(r);
-            }
-        }
-    }
 
     /**
      * save file for customer
@@ -61,7 +35,8 @@ public class Customer {
      * @param result
      * @throws IOException
      */
-    public void saveCustomer(File result) throws IOException { //ulozit bez uprav
+    @Override
+    public void saveFile(File result) throws IOException { //ulozit bez uprav
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(result)))) {
             pw.println(String.format("%8s %10s", "Pocet", "Nazev"));
             for (Product p : tabCustomer) {
@@ -102,6 +77,10 @@ public class Customer {
         return answ;
     }
 
+    /**
+     * deep copy 
+     * @return
+     */
     public List<Product> getTabCustomer() {
         ArrayList<Product> copy = new ArrayList<>();
         for (Product p : tabCustomer) {
@@ -123,23 +102,12 @@ public class Customer {
     }
 
     /**
-     * upgrade amount of product
-     *
-     * @param name
-     * @param amount
-     */
-    public void addproduct(String name, int amount) {
-        Product p = findByName(name);
-        p.addProduct(amount, name);
-    }
-
-    /**
      * find product by name
      *
      * @param name
-     * @return ArrayList 
+     * @return ArrayList
      */
-    private Product findByName(String name) { 
+    private Product findByName(String name) {
         checkName(name);
         for (Product tab : tabCustomer) {
             if (tab.getName() == null ? name == null : tab.getName().equals(name)) {
@@ -149,18 +117,6 @@ public class Customer {
         throw new NoSuchElementException("produkt s nazvem " + name + " neexistuje.");
     }
 
-//    
-//    public int[][] getArrayAmount() { //?
-//        int[][] amount = new int[tabCustomer.size()][1];
-//              String[][] cuArray = tabCustomer.toArray(new String[tabCustomer.size()][3]);
-//            for (int i = 0; i < amount.length; i++) {
-//                amount[i][1] = Integer.parseInt(cuArray[i][0]);
-//
-//            }
-//        return amount;
-//    }
-
-    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -188,12 +144,12 @@ public class Customer {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         Customer c = new Customer();
-        c.loadCustomer(new File("zkouska.txt"));
+        //c.loadCustomer(new File("zkouska.txt"));
         //System.out.println(c);
         c.getTabCustomer();
         //System.out.println(c);
         //c.findByName("Miudh");
-        c.addproduct("Mila", 20);
+        //c.addproduct("Mila", 20);
         System.out.println(c);
         c.pickProduct("Mila", 5);
         System.out.println(c);

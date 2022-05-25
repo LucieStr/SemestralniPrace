@@ -16,12 +16,6 @@ public class Product implements Comparable<Product> {
         this.what = what;
     }
 
-    public Product() {
-        this.amount = amount;
-        this.name = name;
-        this.what = what;
-    }
-
     public Product(Product p) {
         this.name = p.name;
         this.amount = p.amount;
@@ -53,16 +47,6 @@ public class Product implements Comparable<Product> {
             this.amount = this.amount - amount;
         }
         this.name = name;
-    }
-
-    /**
-     * get new amount of product
-     *
-     * @param amount
-     * @param name
-     */
-    public void addProduct(int amount, String name) {
-        this.amount = this.amount + amount;
     }
 
     @Override
