@@ -32,7 +32,7 @@ public class ConsolaUi {
     private static String parent;
     private static File dataDirectory;
 
-    public static void main(String[] args) throws IOException { //IO??  
+    public static void main(String[] args) throws IOException { 
         try {
             String[][] tabOw, tabCus;
             boolean end = false;
@@ -140,7 +140,7 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void customer() throws IOException { //muze tam byt IOException???
+    private static void customer() throws IOException { 
         try {
             System.out.println("Vitam te v Horskem stanku.");
             System.out.println("Kde zaplatis kolik budes chtit.");
@@ -218,7 +218,7 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void pay() throws IOException { //Input mismatch exception
+    private static void pay() throws IOException { 
         try {
             System.out.println("Zadejte castku");
             String input = "";
@@ -271,6 +271,7 @@ public class ConsolaUi {
         System.out.println(customer);
     }
 
+
     /**
      * show map
      */
@@ -301,7 +302,7 @@ public class ConsolaUi {
             System.out.println("Chyba pri praci se souborem");
         }
         try {
-            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat"))); //nemuze se zobrazit pokud neni vydelek
+            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat"))); 
             System.out.println(money.income());
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
