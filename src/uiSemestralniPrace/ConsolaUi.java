@@ -297,7 +297,7 @@ public class ConsolaUi {
      */
     private static void displayMoney() throws IOException {
         try {
-            money.saveBinaryFile(new File(dataDirectory, "price.dat"));
+            money.saveFile(new File(dataDirectory, "price.dat"));
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
         }
