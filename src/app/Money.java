@@ -18,20 +18,36 @@ public class Money {
     private int income;
     private int price;
 
+    /**
+     * constructor
+     */
     public Money() {
         this.income = income;
         this.price = price;
     }
-
+    
+    /**
+     * constructor
+     * @param income
+     * @param price 
+     */
     public Money(int income, int price) {
         this.income = income;
         this.price = price;
     }
 
+    /**
+     * get income
+     * @return income
+     */
     public int getIncome() {
         return income;
     }
 
+    /**
+     * set income
+     * @param income 
+     */
     public void setIncome(int income) {
         this.income = income;
     }
@@ -124,6 +140,10 @@ public class Money {
         return sb.toString();
     }
 
+    /**
+     * string for file money
+     * @return string
+     */
     @Override
     public String toString() {
         return String.format("%10d %10d", this.price, this.income);

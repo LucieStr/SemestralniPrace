@@ -12,6 +12,7 @@ import java.util.Comparator;
  * @author lucka
  */
 public class ComparatorProductByAmount implements Comparator<Product> {
+
     @Override
     public int compare(Product o1,Product o2 ){
         return o1.getAmount()-(o2.getAmount());

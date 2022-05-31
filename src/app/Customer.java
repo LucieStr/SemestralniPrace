@@ -23,11 +23,6 @@ public class Customer implements Library {
     private String product;
     private List<Product> tabCustomer;
 
-    public Customer() {
-        this.product = product;
-        this.tabCustomer = new ArrayList<>();
-    }
-
 
     /**
      * save file for customer
@@ -46,6 +41,10 @@ public class Customer implements Library {
         }
     }
 
+    /**
+     * save List
+     * @param tab 
+     */
     public void saveCustomertab(List<Product> tab) {
         this.tabCustomer = tab;
     }
@@ -54,7 +53,7 @@ public class Customer implements Library {
      * check if name of product is correct
      *
      * @param name
-     * @return
+     * @return name
      */
     private String checkName(String name) {
         if (!name.matches("[A-Z][a-z]+")) {
@@ -65,7 +64,6 @@ public class Customer implements Library {
 
     /**
      * find year, month and day
-     *
      * @return date
      */
     public String date() {
@@ -91,7 +89,6 @@ public class Customer implements Library {
 
     /**
      * lower amount of product
-     *
      * @param name
      * @param amount
      */
@@ -103,7 +100,6 @@ public class Customer implements Library {
 
     /**
      * find product by name
-     *
      * @param name
      * @return ArrayList
      */

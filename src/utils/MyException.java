@@ -10,6 +10,10 @@ package utils;
  */
 public class MyException extends RuntimeException {
     
+    /**
+     * exception
+     * @param message 
+     */
         public MyException(String message) {
         super(message); 
     }

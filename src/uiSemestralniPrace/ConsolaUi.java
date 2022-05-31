@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import utils.MyException;
 
 /**
  *
@@ -32,7 +33,7 @@ public class ConsolaUi {
     private static String parent;
     private static File dataDirectory;
 
-    public static void main(String[] args) throws IOException { //IO??  
+    public static void main(String[] args) throws IOException { 
         try {
             String[][] tabOw, tabCus;
             boolean end = false;
@@ -140,7 +141,7 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void customer() throws IOException { //muze tam byt IOException???
+    private static void customer() throws IOException { 
         try {
             System.out.println("Vitam te v Horskem stanku.");
             System.out.println("Kde zaplatis kolik budes chtit.");
@@ -218,13 +219,13 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void pay() throws IOException { //Input mismatch exception
+    private static void pay() throws IOException { 
         try {
             System.out.println("Zadejte castku");
             String input = "";
             try {
                 input = sc.next();
-                int number = Integer.parseInt(input);
+                int number = Math.abs(Integer.parseInt(input));
                 money.moneyFromCustomer(number);
             } catch (NumberFormatException e) {
                 System.out.println(input + " neni cislo");
@@ -246,10 +247,14 @@ public class ConsolaUi {
             String input = "";
             System.out.println("Napiste nazev produktu a pocet");
             try {
-                String name = sc.next();
-                input = sc.next();
-                int amount = Integer.parseInt(input);
-                customer.pickProduct(name, amount);
+                try {
+                    String name = sc.next();
+                    input = sc.next();
+                    int amount = Integer.parseInt(input);
+                    customer.pickProduct(name, amount);
+                } catch (MyException e) {
+                    System.out.println(e.getMessage());
+                }
             } catch (NumberFormatException e) {
                 System.out.println(input + " neni cislo");
             }
@@ -258,6 +263,7 @@ public class ConsolaUi {
             System.out.println("Zkuste to znovu");
         }
         customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
+        System.out.format("Soubor s novym poctem produktu byl ulozen");
     }
 
     /**
@@ -301,7 +307,7 @@ public class ConsolaUi {
             System.out.println("Chyba pri praci se souborem");
         }
         try {
-            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat"))); //nemuze se zobrazit pokud neni vydelek
+            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat"))); 
             System.out.println(money.income());
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
@@ -309,6 +315,12 @@ public class ConsolaUi {
 
     }
 
+    /**
+     * load file
+     * @param nameFile
+     * @return
+     * @throws IOException 
+     */
     public static String[][] load(File nameFile) throws IOException {
         int i = 0;
         String line;
@@ -330,6 +342,10 @@ public class ConsolaUi {
         }
     }
 
+    /**
+     * paarsel file to get ArrayList with prices and names
+     * @param tab 
+     */
     private static void parselOw(String[][] tab) {
         List<TabOwner> tabOwner = new ArrayList<>();
         String parts;
@@ -345,6 +361,10 @@ public class ConsolaUi {
         owner.saveOwnertab(tabOwner);
     }
 
+    /**
+     * parsel to get ArrayList with amount, name and what
+     * @param tab 
+     */
     private static void parselCus(String[][] tab) {
         List<Product> tabCustomer = new ArrayList<>();
         String parts;
@@ -359,6 +379,11 @@ public class ConsolaUi {
         customer.saveCustomertab(tabCustomer);
     }
 
+    /**
+     * parsel file zakaznik
+     * @return array with amounts
+     * @throws IOException 
+     */
     public static String[][] parseAmount() throws IOException {
         String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
         String[][] amount = new String[tab.length][2];
@@ -373,6 +398,11 @@ public class ConsolaUi {
         return amount;
     }
 
+    /**
+     *parsel file majitel1
+     * @return array with prices of one product
+     * @throws IOException
+     */
     public static String[][] parsePOP() throws IOException {
         String[][] tab = load(new File(dataDirectory, "majitel1.txt"));
         String[][] price = new String[tab.length][2];

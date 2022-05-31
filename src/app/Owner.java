@@ -18,11 +18,18 @@ public class Owner implements Library{
     private String name;
     private List<TabOwner> tabOwner;
 
+    /**
+     * constructor
+     */
     public Owner() {
         this.name = name;
         this.tabOwner = new ArrayList<>();
     }
 
+    /**
+     * deep copy
+     * @return ArrayList copy 
+     */
     public List<TabOwner> getTabOwner() {
         ArrayList<TabOwner> copy = new ArrayList<>();
         for (TabOwner tab : tabOwner) {
@@ -48,24 +55,12 @@ public class Owner implements Library{
         }
     }
 
+    /**
+     * save List
+     * @param tab 
+     */
     public void saveOwnertab(List<TabOwner> tab) {
         this.tabOwner = tab;
-    }
-
-    /**
-     * upgrade price of one product
-     *
-     * @param priceOneProduct
-     * @param name
-     */
-    public void setPriceOneProduct(String name, int priceOneProduct) {
-        for (TabOwner tab : tabOwner) {
-            //if (tab.getName() == null ? name == null : tab.getName().equals(name)) {
-                tab.setProductPrice(priceOneProduct);
-               
-            //}
-            // throw new NoSuchElementException("Produkt s nazvem " + name + " neexistuje");
-        }
     }
 
     @Override
