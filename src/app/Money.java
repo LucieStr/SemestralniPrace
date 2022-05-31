@@ -8,12 +8,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import utils.Library;
 
 /**
  *
  * @author lucka
  */
-public class Money {
+public class Money implements Library{
 
     private int income;
     private int price;
@@ -104,7 +105,8 @@ public class Money {
      * @param money
      * @throws IOException
      */
-    public void saveBinaryFile(File money) throws IOException {
+    @Override
+    public void saveFile(File money) throws IOException {
         try (DataOutputStream out = new DataOutputStream(new FileOutputStream(money))) {
             int pri = price();
             int income = getIncome();
