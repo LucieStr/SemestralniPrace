@@ -25,7 +25,6 @@ import utils.MyException;
  */
 public class ConsolaUi {
 
-    private int choice;
     private static Scanner sc = new Scanner(System.in);
     private static app.Customer customer;
     private static app.Owner owner;
@@ -33,10 +32,10 @@ public class ConsolaUi {
     private static String parent;
     private static File dataDirectory;
 
-    public static void main(String[] args) throws IOException { 
+    public static void main(String[] args) throws IOException {
         try {
             String[][] tabOw, tabCus;
-            boolean end = false;
+            boolean konec = false;
             int choice;
             parent = System.getProperty("user.dir") + File.separator + "data";
             dataDirectory = new File(parent);
@@ -50,6 +49,7 @@ public class ConsolaUi {
             String input = "";
             do {
                 System.out.println("Kdo jsi?");
+                System.out.println(" ");
                 displayMenu();
                 try {
                     input = sc.next();
@@ -63,17 +63,20 @@ public class ConsolaUi {
                             break;
                         case 0:
                             System.out.println("konec");
-                            end = true;
+                            konec = true;
                             break;
                         default:
                             System.out.println("neplatna volba ");
+                            System.out.println(" ");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println(input + " neni cislo");
+                    System.out.println(" ");
                 }
-            } while (!end);
+            } while (!konec);
         } catch (IOException e) {
             System.out.println("Neco se pokazilo");
+            System.out.println(" ");
         }
     }
 
@@ -97,6 +100,7 @@ public class ConsolaUi {
             int choice;
             String input = "";
             do {
+                System.out.println(" ");
                 displayMenuOwner();
                 try {
                     input = sc.next();
@@ -116,13 +120,16 @@ public class ConsolaUi {
                             break;
                         default:
                             System.out.println("neplatna volba");
+                            System.out.println(" ");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println(input + " neni cislo");
+                    System.out.println("");
                 }
             } while (!end);
         } catch (IOException e) {
             System.out.println("Neco se pokazilo");
+            System.out.println(" ");
         }
     }
 
@@ -141,8 +148,9 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void customer() throws IOException { 
+    private static void customer() throws IOException {
         try {
+            System.out.println(" ");
             System.out.println("Vitam te v Horskem stanku.");
             System.out.println("Kde zaplatis kolik budes chtit.");
             String date = customer.date();
@@ -151,6 +159,7 @@ public class ConsolaUi {
             String input = "";
             int choice;
             do {
+                System.out.println(" ");
                 displayMenuCustomer();
                 try {
                     input = sc.next();
@@ -173,13 +182,16 @@ public class ConsolaUi {
                             break;
                         default:
                             System.out.println("neplatna volba");
+                            System.out.println(" ");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println(input + " neni cislo");
+                    System.out.println(" ");
                 }
             } while (!end);
         } catch (IOException e) {
             System.out.println("Neco se pokazilo");
+            System.out.println(" ");
         }
     }
 
@@ -200,6 +212,7 @@ public class ConsolaUi {
      * @throws IOException
      */
     private static void displayProductsByAmount() {
+        System.out.println(" ");
         customer.getTabCustomer();
         customer.sortByAmount();
         System.out.println(customer);
@@ -211,6 +224,7 @@ public class ConsolaUi {
      * @throws IOException
      */
     private static void displayPrice() {
+        System.out.println(" ");
         System.out.println(owner);
     }
 
@@ -219,8 +233,9 @@ public class ConsolaUi {
      *
      * @throws IOException
      */
-    private static void pay() throws IOException { 
+    private static void pay() throws IOException {
         try {
+            System.out.println(" ");
             System.out.println("Zadejte castku");
             String input = "";
             try {
@@ -229,11 +244,14 @@ public class ConsolaUi {
                 money.moneyFromCustomer(number);
             } catch (NumberFormatException e) {
                 System.out.println(input + " neni cislo");
+                System.out.println(" ");
             }
             System.out.println("Dekuju za zaplaceni");
-            money.saveBinaryFile(new File(dataDirectory, "price.dat"));
+            System.out.println(" ");
+            money.saveFile(new File(dataDirectory, "price.dat"));
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
+            System.out.println(" ");
         }
     }
 
@@ -245,25 +263,30 @@ public class ConsolaUi {
     private static void pickProduct() throws IOException {
         try {
             String input = "";
+            System.out.println(" ");
             System.out.println("Napiste nazev produktu a pocet");
             try {
                 try {
                     String name = sc.next();
                     input = sc.next();
-                    int amount = Integer.parseInt(input);
+                    int amount = Math.abs(Integer.parseInt(input));
                     customer.pickProduct(name, amount);
+                    System.out.println(" ");
+                            customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
+                    System.out.format("Mate vybrano (ulozen soubor s novym poctem produktu)");
+                    System.out.println(" ");
                 } catch (MyException e) {
                     System.out.println(e.getMessage());
                 }
             } catch (NumberFormatException e) {
                 System.out.println(input + " neni cislo");
+                System.out.println(" ");
             }
         } catch (NoSuchElementException e) {
             System.out.println(e.getMessage());
             System.out.println("Zkuste to znovu");
+            System.out.println(" ");
         }
-        customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
-        System.out.format("Soubor s novym poctem produktu byl ulozen");
     }
 
     /**
@@ -272,11 +295,11 @@ public class ConsolaUi {
      * @throws IOException
      */
     private static void displayProducts() {
+        System.out.println(" ");
         customer.getTabCustomer();
         customer.sortByWhat();
         System.out.println(customer);
     }
-
 
     /**
      * show map
@@ -303,12 +326,13 @@ public class ConsolaUi {
      */
     private static void displayMoney() throws IOException {
         try {
+            System.out.println(" ");
             money.saveFile(new File(dataDirectory, "price.dat"));
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
         }
         try {
-            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat"))); 
+            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat")));
             System.out.println(money.income());
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
@@ -318,9 +342,10 @@ public class ConsolaUi {
 
     /**
      * load file
+     *
      * @param nameFile
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public static String[][] load(File nameFile) throws IOException {
         int i = 0;
@@ -345,7 +370,8 @@ public class ConsolaUi {
 
     /**
      * paarsel file to get ArrayList with prices and names
-     * @param tab 
+     *
+     * @param tab
      */
     private static void parselOw(String[][] tab) {
         List<TabOwner> tabOwner = new ArrayList<>();
@@ -364,7 +390,8 @@ public class ConsolaUi {
 
     /**
      * parsel to get ArrayList with amount, name and what
-     * @param tab 
+     *
+     * @param tab
      */
     private static void parselCus(String[][] tab) {
         List<Product> tabCustomer = new ArrayList<>();
@@ -382,8 +409,9 @@ public class ConsolaUi {
 
     /**
      * parsel file zakaznik
+     *
      * @return array with amounts
-     * @throws IOException 
+     * @throws IOException
      */
     public static String[][] parseAmount() throws IOException {
         String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
@@ -400,7 +428,8 @@ public class ConsolaUi {
     }
 
     /**
-     *parsel file majitel1
+     * parsel file majitel1
+     *
      * @return array with prices of one product
      * @throws IOException
      */
