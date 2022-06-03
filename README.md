@@ -8,8 +8,13 @@ Vstupem programu Horský stánek budou tři soubory. Dva soubory pro majitele st
 
 ### ŘEŠENÍ
 Funkční specifikace
-![SmartSelect_20220601-202619_Samsung Notes](https://user-images.githubusercontent.com/100836132/171802928-ba87b7d6-310b-4451-84fb-2ed2989b08cb.jpg)
-
+-Majitel - Menu
+         - Výdělek
+         - Ceny produktů
+-Zakazník - Menu
+          - Vybrat produkty
+          - Zaplatit
+          - Mapa
 
 Popis struktury vstupních a výstupních souborů
 
