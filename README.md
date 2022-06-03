@@ -13,9 +13,12 @@ Funkční specifikace
 
 Popis struktury vstupních a výstupních souborů
 
+
 Class diagram
 ![Horsky_stanek drawio](https://user-images.githubusercontent.com/100836132/171803006-1671af07-66ca-453d-8e67-71a8e7be34b8.png)
+
 
 ### TESTOVÁNÍ
 
 POPIS FUNGOVÁNÍ EXTERNÍ KNIHOVNY
+![showMap](https://user-images.githubusercontent.com/100836132/171803175-65019b49-c53c-4411-ac30-931830613df0.png)
