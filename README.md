@@ -28,4 +28,5 @@ Vstupní soubor majitel1 obsahuje cenu jendotlivých produktů (priceOneProduct,
 
 ## POPIS FUNGOVÁNÍ EXTERNÍ KNIHOVNY
 ![Snímek obrazovky 2022-06-03 091121](https://user-images.githubusercontent.com/100836132/171805600-c9ee2cd0-e0a2-461e-978d-cc93500273d1.png)
+
 Obrázek převedeme na Component pomocí ImageIcon a JLabel (310). Jpanel ukládá a organizuje Components (311). Abychom mohli zobrazit obrázek, musíme použít JFrame (313). Nastavíme velikost (314) a viditelnost (316).
