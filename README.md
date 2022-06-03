@@ -8,13 +8,15 @@ Vstupem programu Horský stánek budou tři soubory. Dva soubory pro majitele st
 
 ### ŘEŠENÍ
 Funkční specifikace
--Majitel - Menu
-         - Výdělek
-         - Ceny produktů
--Zakazník - Menu
-          - Vybrat produkty
-          - Zaplatit
-          - Mapa
+-Majitel
+ - Menu
+ - Výdělek
+ - Ceny produktů
+-Zakazník 
+ - Menu
+ - Vybrat produkty
+ - Zaplatit
+ - Mapa
 
 Popis struktury vstupních a výstupních souborů
 
