@@ -18,13 +18,15 @@ Vstupem programu Horský stánek budou tři soubory. Dva soubory pro majitele st
   - Mapa
 
 ### Popis struktury vstupních a výstupních souborů
-Vstupní soubor majitel1 obsahuje cenu jendotlivých produktů (priceOneProduct, int) a názvy produktů (name, String). Soubor zakaznik obsahuje množství produktů (amount, int), názvy produktů (name, String) a jestli to je jídlo nebo pití (what, String). Binární soubor obsahuje celkovou cenu produktů (price, int) a kolik zákazníci zaplatili (income, int). Výstupní soubor obssahuje počy kusů produktů (amount, int) a jejich názvy (name, String).
+Vstupní soubor majitel1 obsahuje názvy produktů (name, String) a cenu jendotlivých produktů (priceOneProduct, int). Soubor zakaznik obsahuje množství produktů (amount, int), názvy produktů (name, String) a jestli to je jídlo nebo pití (what, String). Binární soubor obsahuje celkovou cenu produktů (price, int) a kolik zákazníci zaplatili (income, int). Výstupní soubor obssahuje počy kusů produktů (amount, int) a jejich názvy (name, String). Udáje jsou odděleny mezerou. Název musí být napsán s velkým počátečním písmenem.
 
 ### Class diagram
 ![Horsky_stanek drawio](https://user-images.githubusercontent.com/100836132/171803006-1671af07-66ca-453d-8e67-71a8e7be34b8.png)
 
 
 ## TESTOVÁNÍ
+![Snímek obrazovky 2022-06-03 095542](https://user-images.githubusercontent.com/100836132/171812876-a12197ee-4e2c-4fa5-8b92-e4b2974266c9.png)
+
 
 ## POPIS FUNGOVÁNÍ EXTERNÍ KNIHOVNY
 ![Snímek obrazovky 2022-06-03 091121](https://user-images.githubusercontent.com/100836132/171805600-c9ee2cd0-e0a2-461e-978d-cc93500273d1.png)
