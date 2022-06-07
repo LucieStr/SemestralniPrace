@@ -241,12 +241,16 @@ public class ConsolaUi {
             try {
                 input = sc.next();
                 int number = Math.abs(Integer.parseInt(input));
+                if( number == 0){
+                    System.out.println("Nic nebylo vlozeno");
+                }else{
                 money.moneyFromCustomer(number);
+                System.out.println("Dekuju za zaplaceni");
+                }
             } catch (NumberFormatException e) {
                 System.out.println(input + " neni cislo");
                 System.out.println(" ");
             }
-            System.out.println("Dekuju za zaplaceni");
             System.out.println(" ");
             money.saveFile(new File(dataDirectory, "price.dat"));
         } catch (IOException e) {
@@ -270,11 +274,15 @@ public class ConsolaUi {
                     String name = sc.next();
                     input = sc.next();
                     int amount = Math.abs(Integer.parseInt(input));
+                    if(amount == 0){
+                        System.out.println("Nic jste nevybrali");
+                    }else{
                     customer.pickProduct(name, amount);
                     System.out.println(" ");
-                            customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
+                    customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
                     System.out.format("Mate vybrano (ulozen soubor s novym poctem produktu)");
                     System.out.println(" ");
+                    }
                 } catch (MyException e) {
                     System.out.println(e.getMessage());
                 }

@@ -1,10 +1,8 @@
 
 package utils;
 
-import app.Product;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 
 public interface Library {
@@ -14,5 +12,5 @@ public interface Library {
      */
     public void saveFile(File result) throws IOException;
 
-    
+   
 }
