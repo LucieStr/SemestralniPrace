@@ -27,7 +27,7 @@ BINÁRNÍ SOUBOR
 4B(int) income (kolik zákazníci zaplatili) 
 
 ### Class diagram
-![Horsky_stanek drawio](https://user-images.githubusercontent.com/100836132/171803006-1671af07-66ca-453d-8e67-71a8e7be34b8.png)
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/100836132/173124560-7130f7b0-44f0-4587-ac9d-1d1e160ea676.png)
 
 
 ## TESTOVÁNÍ
