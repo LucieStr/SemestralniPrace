@@ -1,5 +1,6 @@
 package app;
 
+import java.io.BufferedReader;
 import utils.Income;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -7,17 +8,22 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import utils.Library;
 
 /**
  *
  * @author lucka
  */
-public class Money implements Library{
+public class Money implements Library {
 
+    private List<Product> tab;
     private int income;
     private int price;
+    private static app.Customer c;
 
     /**
      * constructor
@@ -25,12 +31,14 @@ public class Money implements Library{
     public Money() {
         this.income = income;
         this.price = price;
+        this.tab = new ArrayList<>();
     }
-    
+
     /**
      * constructor
+     *
      * @param income
-     * @param price 
+     * @param price
      */
     public Money(int income, int price) {
         this.income = income;
@@ -39,6 +47,7 @@ public class Money implements Library{
 
     /**
      * get income
+     *
      * @return income
      */
     public int getIncome() {
@@ -47,7 +56,8 @@ public class Money implements Library{
 
     /**
      * set income
-     * @param income 
+     *
+     * @param income
      */
     public void setIncome(int income) {
         this.income = income;
@@ -58,46 +68,12 @@ public class Money implements Library{
      *
      * @param money
      */
-    public void moneyFromCustomer(int money) {  
+    public void moneyFromCustomer(int money) {
         this.income = income + money;
         setIncome(this.income);
 
     }
 
-    /**
-     * find income
-     *
-     * @return enum
-     */
-    public Income income() {
-        if (income > price) {
-            return Income.VYDELEK;
-        } else if (income == price) {
-            return Income.NEPRODELEK;
-        } else {
-            return Income.PRODELEK;
-        }
-    }
-
-    /**
-     * sum price from amount and price from one product
-     *
-     * @return price
-     * @throws java.io.IOException
-     */
-    public int price() throws IOException {
-        this.price = 0;
-        String[][] cus = uiSemestralniPrace.ConsolaUi.parseAmount();      
-        String[][] own = uiSemestralniPrace.ConsolaUi.parsePOP();       
-        for (int i = 0; i < cus.length; i++) {
-            for (int j = 0; j < own.length; j++) {
-                if (cus[i][1] == null ? own[j][0] == null : cus[i][1].equals(own[j][0])) {
-                    price = price+ (Integer.parseInt(cus[i][0]) * Integer.parseInt(own[j][1]));
-                }
-            }
-        }
-        return price;
-    }
 
     /**
      * safe binary file
@@ -144,18 +120,79 @@ public class Money implements Library{
 
     /**
      * string for file money
+     *
      * @return string
      */
     @Override
     public String toString() {
         return String.format("%10d %10d", this.price, this.income);
     }
-    
 
+    public int price() {
+        this.price = 0;
+        for (Product product : tab) {
+            price = price + (product.getPriceOneProduct() * product.getAmount());
+        }
+        return price;
+    }
+
+
+
+//    
+//            /**
+//     * load file
+//     *
+//     * @param nameFile
+//     * @return
+//     * @throws IOException
+//     */
+//    public String[][] load(File nameFile) throws IOException {
+//        int i = 0;
+//        String line;
+//        try (BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
+//            br.readLine();
+//            while ((line = br.readLine()) != null) {
+//                i++;
+//            }
+//        }
+//        String[][] tab = new String[i][1];
+//        i = 0;
+//        try (BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
+//            br.readLine();
+//            while ((line = br.readLine()) != null) {
+//                tab[i][0] = line;
+//                i++;
+//            }
+//            return tab;
+//        }
+//    }
+//
+//    /**
+//     * parsel to get ArrayList with amount, name and what
+//     *
+//     * @param tab
+//     */
+//    private void parselCus(String[][] tabb) {
+//        List<Product> tab = new ArrayList<>();
+//        String parts;
+//        String[] split;
+//        Product r;
+//        for (int i = 0; i < tabb.length; i++) {
+//            parts = tabb[i][0];
+//            split = parts.split("[ ]+");
+//            r = new Product(Integer.parseInt(split[0]), split[1], split[2], Integer.parseInt(split[3]));
+//            tab.add(r);
+//        }
+//        saveCustomertab(tab);
+//    }
+//        public void saveCustomertab(List<Product> tab) {
+//        this.tab = tab;
+//    }
     public static void main(String[] args) throws IOException {
         Money m = new Money();
         Owner r = new Owner();
         Customer c = new Customer();
+        //m.parselCus(c.load(new File("zkouska.txt")));
         //c.loadCustomer(new File("zkouska.txt"));
         //r.loadOwner(new File("zkouska2.txt"));
         //int price = 100;
@@ -164,7 +201,7 @@ public class Money implements Library{
         m.price();
         //m.setPrice(price);
         //System.out.println(m);
-        //m.saveBinaryFile(new File("zkouska3.dat"));
+        m.saveFile(new File("zkouska3.dat"));
         System.out.println(m.readBinaryFile(new File("zkouska3.dat")));
 //        System.out.println(m.income());
 //        System.out.println(m.getPrice());

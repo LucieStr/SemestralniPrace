@@ -33,8 +33,8 @@ public class ConsolaUi {
     private static File dataDirectory;
 
     public static void main(String[] args) throws IOException {
-        try {
-            String[][] tabOw, tabCus;
+        try {                
+            String[][] tabCus;
             boolean konec = false;
             int choice;
             parent = System.getProperty("user.dir") + File.separator + "data";
@@ -42,8 +42,8 @@ public class ConsolaUi {
             owner = new app.Owner();
             money = new app.Money();
             customer = new app.Customer();
-            tabOw = load(new File(dataDirectory, "majitel1.txt"));
-            parselOw(tabOw);
+//            tabOw = load(new File(dataDirectory, "majitel1.txt"));
+//            parselOw(tabOw);
             tabCus = load(new File(dataDirectory, "zakaznik.txt"));
             parselCus(tabCus);
             String input = "";
@@ -225,7 +225,13 @@ public class ConsolaUi {
      */
     private static void displayPrice() {
         System.out.println(" ");
-        System.out.println(owner);
+        String[][] tab = owner.getOw();
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.format(tab[i][j] + " ");
+            }
+            System.out.println("");
+        }
     }
 
     /**
@@ -241,11 +247,11 @@ public class ConsolaUi {
             try {
                 input = sc.next();
                 int number = Math.abs(Integer.parseInt(input));
-                if( number == 0){
+                if (number == 0) {
                     System.out.println("Nic nebylo vlozeno");
-                }else{
-                money.moneyFromCustomer(number);
-                System.out.println("Dekuju za zaplaceni");
+                } else {
+                    customer.moneyFromCustomer(number);
+                    System.out.println("Dekuju za zaplaceni");
                 }
             } catch (NumberFormatException e) {
                 System.out.println(input + " neni cislo");
@@ -274,14 +280,15 @@ public class ConsolaUi {
                     String name = sc.next();
                     input = sc.next();
                     int amount = Math.abs(Integer.parseInt(input));
-                    if(amount == 0){
+                    if (amount == 0) {
                         System.out.println("Nic jste nevybrali");
-                    }else{
-                    customer.pickProduct(name, amount);
-                    System.out.println(" ");
-                    customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
-                    System.out.format("Mate vybrano (ulozen soubor s novym poctem produktu)");
-                    System.out.println(" ");
+                    } else {
+                        customer.pickProduct(name, amount);
+                        System.out.println(" ");
+                        customer.saveFile(new File(dataDirectory, "zakaznikUlozeni.txt"));
+                        customer.saveNewFile(new File(dataDirectory, "nakup.txt"));
+                        System.out.format("Mate vybrano (ulozen soubor s novym poctem produktu)");
+                        System.out.println(" ");
                     }
                 } catch (MyException e) {
                     System.out.println(e.getMessage());
@@ -335,16 +342,22 @@ public class ConsolaUi {
     private static void displayMoney() throws IOException {
         try {
             System.out.println(" ");
-            money.saveFile(new File(dataDirectory, "price.dat"));
+            String[][] tab = customer.getNewTab();
+            if (tab == null) {
+                System.out.println("Zakaznik si nic nekoupil");
+            } else {
+                System.out.println("Zakaznik si koupil");
+                System.out.println(customer.readFile(new File(dataDirectory,"nakup.txt")));
+                System.out.println("a zaplatil za to "+customer.getIncome()+" Kc");
+                System.out.println("");
+                System.out.println("Majitel za stejne mnoztvi produktu zaplatil "+ customer.moneyOwner()+" Kc");
+            }
+            //money.saveFile(new File(dataDirectory, "price.dat"));
         } catch (IOException e) {
             System.out.println("Chyba pri praci se souborem");
         }
-        try {
-            System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat")));
-            System.out.println(money.income());
-        } catch (IOException e) {
-            System.out.println("Chyba pri praci se souborem");
-        }
+        //System.out.println(money.readBinaryFile(new File(dataDirectory, "price.dat")));
+        System.out.println(customer.income());
 
     }
 
@@ -376,82 +389,81 @@ public class ConsolaUi {
         }
     }
 
-    /**
-     * paarsel file to get ArrayList with prices and names
-     *
-     * @param tab
-     */
-    private static void parselOw(String[][] tab) {
-        List<TabOwner> tabOwner = new ArrayList<>();
-        String parts;
-        String[] split;
-        TabOwner r;
-        for (int i = 0; i < tab.length; i++) {
-            parts = tab[i][0];
-            split = parts.split("[ ]+");
-            r = new TabOwner(split[0], Integer.parseInt(split[1]));
-            tabOwner.add(r);
-
-        }
-        owner.saveOwnertab(tabOwner);
-    }
-
+//    /**
+//     * paarsel file to get ArrayList with prices and names
+//     *
+//     * @param tab
+//     */
+//    private static void parselOw(String[][] tab) {
+//        List<TabOwner> tabOwner = new ArrayList<>();
+//        String parts;
+//        String[] split;
+//        TabOwner r;
+//        for (int i = 0; i < tab.length; i++) {
+//            parts = tab[i][0];
+//            split = parts.split("[ ]+");
+//            r = new TabOwner(split[0], Integer.parseInt(split[1]));
+//            tabOwner.add(r);
+//
+//        }
+//        owner.saveOwnertab(tabOwner);
+//    }
     /**
      * parsel to get ArrayList with amount, name and what
      *
      * @param tab
      */
-    private static void parselCus(String[][] tab) {
-        List<Product> tabCustomer = new ArrayList<>();
+    private static void parselCus(String[][] t) {
+        List<Product> tab = new ArrayList<>();
         String parts;
         String[] split;
         Product r;
-        for (int i = 0; i < tab.length; i++) {
-            parts = tab[i][0];
+        for (int i = 0; i < t.length; i++) {
+            parts = t[i][0];
             split = parts.split("[ ]+");
-            r = new Product(Integer.parseInt(split[0]), split[1], split[2]);
-            tabCustomer.add(r);
+            r = new Product(Integer.parseInt(split[0]), split[1], Integer.parseInt(split[2]), split[3]);
+            tab.add(r);
         }
-        customer.saveCustomertab(tabCustomer);
+        customer.saveCustomertab(tab);
     }
 
-    /**
-     * parsel file zakaznik
-     *
-     * @return array with amounts
-     * @throws IOException
-     */
-    public static String[][] parseAmount() throws IOException {
-        String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
-        String[][] amount = new String[tab.length][2];
-        String parts;
-        String[] split;
-        for (int i = 0; i < amount.length; i++) {
-            parts = tab[i][0];
-            split = parts.split("[ ]+");
-            amount[i][0] = split[0];
-            amount[i][1] = split[1];
-        }
-        return amount;
-    }
-
-    /**
-     * parsel file majitel1
-     *
-     * @return array with prices of one product
-     * @throws IOException
-     */
-    public static String[][] parsePOP() throws IOException {
-        String[][] tab = load(new File(dataDirectory, "majitel1.txt"));
-        String[][] price = new String[tab.length][2];
-        String parts;
-        String[] split;
-        for (int i = 0; i < price.length; i++) {
-            parts = tab[i][0];
-            split = parts.split("[ ]+");
-            price[i][0] = split[0];
-            price[i][1] = split[1];
-        }
-        return price;
-    }
+//    /**
+//     * parsel file zakaznik
+//     *
+//     * @return array with amounts
+//     * @throws IOException
+//     */
+//    public static String[][] parseAmount() throws IOException {
+//        String[][] tab = load(new File(dataDirectory, "zakaznik.txt"));
+//        String[][] amount = new String[tab.length][2];
+//        String parts;
+//        String[] split;
+//        for (int i = 0; i < amount.length; i++) {
+//            parts = tab[i][0];
+//            split = parts.split("[ ]+");
+//            amount[i][0] = split[0];
+//            amount[i][1] = split[1];
+//        }
+//        return amount;
+//    }
+//
+//    /**
+//     * parsel file majitel1
+//     *
+//     * @return array with prices of one product
+//     * @throws IOException
+//     */
+//    public static String[][] parsePOP() throws IOException {
+//        String[][] tab = load(new File(dataDirectory, "majitel1.txt"));
+//        String[][] price = new String[tab.length][2];
+//        String parts;
+//        String[] split;
+//        for (int i = 0; i < price.length; i++) {
+//            parts = tab[i][0];
+//            split = parts.split("[ ]+");
+//            price[i][0] = split[0];
+//            price[i][1] = split[1];
+//        }
+//        return price;
+//    }
 }

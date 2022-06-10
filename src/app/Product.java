@@ -1,5 +1,9 @@
 package app;
 
+import java.io.File;
+import java.io.IOException;
+import utils.Library;
+
 /**
  *
  * @author lucka
@@ -9,17 +13,20 @@ public class Product implements Comparable<Product> {
     private String name;
     private int amount;
     private final String what;
+    private int priceOneProduct;
 
     /**
      * constructor
      * @param amount
      * @param name
      * @param what 
+     * @param priceOneProduct 
      */
-    public Product(int amount, String name, String what) {
+    public Product(int amount, String name,int priceOneProduct,String what) {
         this.name = name;
         this.amount = amount;
         this.what = what;
+        this.priceOneProduct = priceOneProduct;
     }
 
     /**
@@ -30,7 +37,11 @@ public class Product implements Comparable<Product> {
         this.name = p.name;
         this.amount = p.amount;
         this.what = p.what;
+        this.priceOneProduct = p.priceOneProduct;
     }
+
+
+    
 
     /**
      * get name
@@ -56,6 +67,10 @@ public class Product implements Comparable<Product> {
         return what;
     }
 
+    public int getPriceOneProduct() {
+        return priceOneProduct;
+    }
+
     /**
      * get lower amount of product
      *
@@ -77,8 +92,9 @@ public class Product implements Comparable<Product> {
      */
     @Override
     public String toString() {
-        return String.format("%3d kusu %10s", this.amount, this.name);
+        return String.format("%3d kusu %10s ", this.amount, this.name);
     }
+    
 
     /**
      * compare food/drink
@@ -89,4 +105,6 @@ public class Product implements Comparable<Product> {
     public int compareTo(Product o) {
         return this.getWhat().compareTo(o.getWhat());
     }
+
+
 }
