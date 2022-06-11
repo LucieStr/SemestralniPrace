@@ -11,6 +11,7 @@ Kdo s aplikací pracuje?
 - Majitel
   - zobrazit názvy produktů a jejich počet, seřazené od nejmenšího počtu po největší
   - zobrazit co zákazníci nakoupili, kolik za to zaplatili, kolik za stejné množství produktů zaplatil majitel a jestli vydělává nebo prodělává
+  - zobrazit kolik majitel zaplatil za vsechny produkty
   - zobrazit názvy produktů a jejich ceny
 - Zákazník
   - zobrazit názvy produktů a jejich počet, první jsou vypsány pití a pak jídlo
@@ -27,7 +28,7 @@ BINÁRNÍ SOUBOR
 4B(int) income (kolik zákazníci zaplatili) 
 
 ### Class diagram
-![Untitled Diagram drawio](https://user-images.githubusercontent.com/100836132/173124560-7130f7b0-44f0-4587-ac9d-1d1e160ea676.png)
+![Untitled Diagram drawio (1)](https://user-images.githubusercontent.com/100836132/173201491-659a6584-036a-457a-b827-5d66bc060cb7.png)
 
 
 ## TESTOVÁNÍ
