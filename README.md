@@ -7,18 +7,20 @@ Stánek, evidence tržby. Placení a výběr produktů.
 Vstupem programu Horský stánek budou tři soubory. Dva soubory pro majitele stánku. V prním budou vypsány produkty a ceny. V druhém počty (celková cena produktů, kolik peněz majitel získal). Soubor pro zákazníka bude obsahovat produkty a jejich množství a jestli to je pití anebo jídlo. Program začne výběrem zákazník nebo majitel. Při výběru zákazník bude menu, u kterého si budeme moci zobrazit produkty, co si chceme koupit, zároveň jakou částku za to zaplatíme (částka nebude stanovena produktem, ale zákazník zaplatí kolik bude chtít). Obrázek mapy, kde jsou další Horské stánky. 
 
 ### Funkční specifikace
+Kdo s aplikací pracuje?
 - Majitel
-  - Menu
-  - Výdělek
-  - Ceny produktů 
-- Zakazník 
-  - Menu
-  - Vybrat produkty
-  - Zaplatit
-  - Mapa
+  - zobrazit názvy produktů a jejich počet, seřazené od nejmenšího počtu po největší
+  - zobrazit co zákazníci nakoupili, kolik za to zaplatili, kolik za stejné množství produktů zaplatil majitel a jestli vydělává nebo prodělává
+  - zobrazit kolik majitel zaplatil za vsechny produkty
+  - zobrazit názvy produktů a jejich ceny
+- Zákazník
+  - zobrazit názvy produktů a jejich počet, první jsou vypsány pití a pak jídlo
+  - vybrat produkty, které si chce majitel koupit
+  - zaplatit
+  - ukázat mapu, kde se nacházejí další stánky
 
 ### Popis struktury vstupních a výstupních souborů
-Vstupní soubor majitel1 obsahuje názvy produktů (name, String) a cenu jendotlivých produktů (priceOneProduct, int). Soubor zakaznik obsahuje množství produktů (amount, int), názvy produktů (name, String) a jestli to je jídlo nebo pití (what, String). Binární soubor obsahuje celkovou cenu produktů (price, int) a kolik zákazníci zaplatili (income, int). Výstupní soubor obsahuje počy kusů produktů (amount, int) a jejich názvy (name, String). Udáje jsou odděleny mezerou. Název musí být napsán s velkým počátečním písmenem.
+Vstupní soubor majitel1 obsahuje názvy produktů (name, String) a cenu jendotlivých produktů (priceOneProduct, int). Soubor zakaznik obsahuje množství produktů (amount, int), názvy produktů (name, String) a jestli to je jídlo nebo pití (what, String). Výstupní soubor obsahuje počy kusů produktů (amount, int) a jejich názvy (name, String). Udáje u všech textovýxh souborů jsou odděleny mezerou. Název produktu musí být napsán s velkým počátečním písmenem.
 
 BINÁRNÍ SOUBOR 
 
@@ -26,7 +28,7 @@ BINÁRNÍ SOUBOR
 4B(int) income (kolik zákazníci zaplatili) 
 
 ### Class diagram
-![Horsky_stanek drawio](https://user-images.githubusercontent.com/100836132/171803006-1671af07-66ca-453d-8e67-71a8e7be34b8.png)
+![Untitled Diagram drawio (1)](https://user-images.githubusercontent.com/100836132/173201491-659a6584-036a-457a-b827-5d66bc060cb7.png)
 
 
 ## TESTOVÁNÍ
