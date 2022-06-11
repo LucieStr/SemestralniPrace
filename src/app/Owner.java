@@ -1,9 +1,7 @@
 package app;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +17,6 @@ public class Owner implements Library {
 
     private String name;
     private List<Product> tab;
-    //private List<Product> splitTab;
     private String[][] ow;
 
     /**
@@ -44,26 +41,6 @@ public class Owner implements Library {
         return copy;
     }
 
-    public String[][] vypis() {
-        ow = new String[tab.size()][3];
-        int help;
-        for (Product p : tab) {
-            for (int j = 0; j < tab.size(); j++) {
-                for (int i = 0; i < tab.size(); i++) {
-                    ow[i][0] = tab.get(i).getName();
-                    help = tab.get(i).getPriceOneProduct();
-                    ow[i][1] =  String.valueOf(help);
-                    ow[i][2] = "Kc";
-                }
-            }
-        }
-        return ow;
-    }
-
-    public String[][] getOw() {
-        return ow = vypis();
-    }
-
 
 
     /**
@@ -83,18 +60,12 @@ public class Owner implements Library {
         }
     }
 
-//    public void setSplitTab(List<Product> splitTab) {
-//        this.splitTab = vypis();
-//    }
-//    public List<Product> getSplitTab() {
-//        return splitTab;
-//    }
     /**
      * save List
      *
      * @param tab
      */
-    public void saveOwnertab(List<Product> tab) {
+    public void saveTab(List<Product> tab) {
         this.tab = tab;
     }
 
@@ -107,7 +78,6 @@ public class Owner implements Library {
 //        return sb.toString();
 //
 //    }
-
 //    public String[][] load(File nameFile) throws IOException {
 //        int i = 0;
 //        String line;
@@ -151,19 +121,17 @@ public class Owner implements Library {
 //    public void saveCustomertab(List<Product> t) {
 //        this.tab = t;
 //    }
-
     public static void main(String[] args) throws IOException {
         Owner o = new Owner();
 
-        o.parselCus(o.load(new File("zkouska.txt")));
+        //o.parselCus(o.load(new File("zkouska.txt")));
         //System.out.println(o);
         //o.setPriceOneProduct(15, "Mila");
-
         // o.saveOwner(new File("zkouska4.txt"));
-        String[][] t = o.getOw();
-        for (int i = 0; i < t.length; i++) {
+        //String[][] t = o.getOw();
+        //for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < 3; j++) {
-                System.out.format(t[i][j] + " ");
+                //System.out.format(t[i][j] + " ");
 
             }
             System.out.println("");
@@ -171,4 +139,4 @@ public class Owner implements Library {
 
     }
 
-}
+

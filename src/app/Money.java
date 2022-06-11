@@ -63,15 +63,8 @@ public class Money implements Library {
         this.income = income;
     }
 
-    /**
-     * upgrade income with money from customer
-     *
-     * @param money
-     */
-    public void moneyFromCustomer(int money) {
-        this.income = income + money;
-        setIncome(this.income);
-
+    public void saveTab(List<Product> t){
+        this.tab = t;
     }
 
 
@@ -197,7 +190,7 @@ public class Money implements Library {
         //r.loadOwner(new File("zkouska2.txt"));
         //int price = 100;
         int income = 500;
-        m.moneyFromCustomer(income);
+        //m.moneyFromCustomer(income);
         m.price();
         //m.setPrice(price);
         //System.out.println(m);

@@ -1,7 +1,7 @@
 package uiSemestralniPrace;
 
 import app.Product;
-import app.TabOwner;
+
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -31,6 +31,7 @@ public class ConsolaUi {
     private static app.Money money;
     private static String parent;
     private static File dataDirectory;
+    private static app.Product product;
 
     public static void main(String[] args) throws IOException {
         try {                
@@ -115,6 +116,9 @@ public class ConsolaUi {
                         case 3:
                             displayPrice();
                             break;
+                        case 4:
+                            price();
+                            break;
                         case 0:
                             end = true;
                             break;
@@ -140,6 +144,7 @@ public class ConsolaUi {
         System.out.println("1 = zobrazit produkty");
         System.out.println("2 = informace o vydelku");
         System.out.println("3 = zobrazit ceny jednotlivych produktu");
+        System.out.println("4 = zobrazit kolik produkty staly celkem");
         System.out.println("0 = zpet");
     }
 
@@ -225,10 +230,22 @@ public class ConsolaUi {
      */
     private static void displayPrice() {
         System.out.println(" ");
-        String[][] tab = owner.getOw();
-        for (int i = 0; i < tab.length; i++) {
+        List<Product> tab = owner.getTabOwner();
+        String[][] ow = new String[tab.size()][3];
+        int help;
+        for (Product p : tab) {
+            for (int j = 0; j < tab.size(); j++) {
+                for (int i = 0; i < tab.size(); i++) {
+                    ow[i][0] = tab.get(i).getName();
+                    help = tab.get(i).getPriceOneProduct();
+                    ow[i][1] = String.valueOf(help);
+                    ow[i][2] = "Kc";
+                }
+            }
+        }
+        for (int i = 0; i < ow.length; i++) {
             for (int j = 0; j < 3; j++) {
-                System.out.format(tab[i][j] + " ");
+                System.out.format(ow[i][j] + " ");
             }
             System.out.println("");
         }
@@ -424,7 +441,9 @@ public class ConsolaUi {
             r = new Product(Integer.parseInt(split[0]), split[1], Integer.parseInt(split[2]), split[3]);
             tab.add(r);
         }
-        customer.saveCustomertab(tab);
+        customer.saveTab(tab);
+        owner.saveTab(tab);
+        money.saveTab(tab);
     }
 
 //    /**
@@ -466,4 +485,10 @@ public class ConsolaUi {
 //        }
 //        return price;
 //    }
+
+    private static void price() {
+        System.out.println(" ");
+        System.out.println("Majitel zapaltil za vsechny produkty " +money.price()+"Kc.");
+        
+    }
 }

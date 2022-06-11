@@ -52,7 +52,7 @@ public class Customer implements Library {
      *
      * @param t
      */
-    public void saveCustomertab(List<Product> t) {
+    public void saveTab(List<Product> t) {
         this.tab = t;
     }
 
@@ -312,7 +312,7 @@ public class Customer implements Library {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
         Customer c = new Customer();
-        c.parselCus(c.load(new File("zkouska.txt")));
+       // c.parselCus(c.load(new File("zkouska.txt")));
         System.out.println(c);
         c.getTabCustomer();
         //System.out.println(c);
